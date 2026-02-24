@@ -1,0 +1,12 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--cyberpunk-dark);
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  background: linear-gradient(135deg, var(--cyberpunk-dark) 0%, var(--cyberpunk-dark-light) 50%, var(--cyberpunk-dark) 100%);
+}

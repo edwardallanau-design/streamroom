@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: streamroom-postgres
+    environment:
+      POSTGRES_DB: streamroom
+      POSTGRES_USER: streamroom_user
+      POSTGRES_PASSWORD: streamroom_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - streamroom-network
+
+volumes:
+  postgres-data:
+
+networks:
+  streamroom-network:
+    driver: bridge

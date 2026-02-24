@@ -1,0 +1,28 @@
+.twitch-embed {
+  display: flex;
+  gap: 1rem;
+}
+
+.twitch-container {
+  flex: 2;
+}
+
+.twitch-chat {
+  flex: 1;
+  min-width: 250px;
+}
+
+.twitch-embed iframe {
+  border: 2px solid var(--cyberpunk-accent);
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .twitch-embed {
+    flex-direction: column;
+  }
+
+  .twitch-chat {
+    display: none;
+  }
+}

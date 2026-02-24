@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --cyberpunk-dark: #0a0a0a;
+  --cyberpunk-dark-light: #1a1a2e;
+  --cyberpunk-accent: #00d4ff;
+  --cyberpunk-accent-alt: #ff006e;
+  --cyberpunk-accent-tertiary: #b300ff;
+  --cyberpunk-text: #e0e0e0;
+  --cyberpunk-text-light: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--cyberpunk-dark);
+  color: var(--cyberpunk-text);
+  font-family: 'Orbitron', monospace;
+  overflow-x: hidden;
+}
+
+html, #root {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: var(--cyberpunk-accent);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--cyberpunk-accent-alt);
+  text-shadow: 0 0 10px var(--cyberpunk-accent-alt);
+}
+
+button {
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, var(--cyberpunk-accent) 0%, var(--cyberpunk-accent-tertiary) 100%);
+  color: var(--cyberpunk-dark);
+  border: 2px solid var(--cyberpunk-accent);
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+button:hover {
+  box-shadow: 0 0 20px var(--cyberpunk-accent), 0 0 40px var(--cyberpunk-accent-tertiary);
+  transform: translateY(-2px);
+}
+
+input, textarea, select {
+  background-color: var(--cyberpunk-dark-light);
+  color: var(--cyberpunk-text-light);
+  border: 2px solid var(--cyberpunk-accent);
+  padding: 10px;
+  font-family: 'Orbitron', monospace;
+  border-radius: 4px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 15px var(--cyberpunk-accent);
+  border-color: var(--cyberpunk-accent-alt);
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px var(--cyberpunk-accent), 0 0 20px var(--cyberpunk-accent);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--cyberpunk-accent), 0 0 30px var(--cyberpunk-accent), 0 0 40px var(--cyberpunk-accent-tertiary);
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(10px);
+  }
+}
+
+.glow-text {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 212, 255, 0.03),
+    rgba(0, 212, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  animation: scanlines 0.15s infinite;
+  z-index: 9999;
+}

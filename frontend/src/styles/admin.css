@@ -1,0 +1,124 @@
+.admin-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+.admin-panel h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.admin-container {
+  background-color: rgba(26, 26, 46, 0.9);
+  border: 3px solid var(--cyberpunk-accent);
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+
+.content-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.content-form h2 {
+  color: var(--cyberpunk-accent);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--cyberpunk-accent-alt);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--cyberpunk-dark-light);
+  color: var(--cyberpunk-text-light);
+  border: 2px solid var(--cyberpunk-accent);
+  border-radius: 4px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--cyberpunk-accent-alt);
+  box-shadow: 0 0 15px rgba(255, 0, 110, 0.3);
+  background-color: rgba(26, 26, 46, 1);
+}
+
+.form-group.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-group.checkbox input[type="checkbox"] {
+  width: auto;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.form-group.checkbox label {
+  margin: 0;
+  flex: 1;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--cyberpunk-accent) 0%, var(--cyberpunk-accent-tertiary) 100%);
+  color: var(--cyberpunk-dark);
+  border: 2px solid var(--cyberpunk-accent);
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5), 0 0 40px rgba(179, 0, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 1.5rem;
+  }
+
+  .admin-container {
+    padding: 1.5rem;
+  }
+}

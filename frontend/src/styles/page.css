@@ -1,0 +1,144 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  border-bottom: 3px solid var(--cyberpunk-accent);
+  padding-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.page-header p {
+  color: var(--cyberpunk-accent-alt);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.content-grid,
+.games-grid-page {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 110, 0.1);
+  border: 2px solid var(--cyberpunk-accent-alt);
+  color: var(--cyberpunk-accent-alt);
+  padding: 1.5rem;
+  border-radius: 4px;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+/* Article Detail Styles */
+.article {
+  background-color: rgba(26, 26, 46, 0.8);
+  border: 2px solid var(--cyberpunk-accent);
+  padding: 3rem;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+.featured-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-bottom: 2rem;
+  border: 2px solid var(--cyberpunk-accent-tertiary);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.article h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--cyberpunk-accent-tertiary);
+  color: var(--cyberpunk-accent-alt);
+  font-size: 0.9rem;
+}
+
+.article-content {
+  line-height: 1.8;
+  color: var(--cyberpunk-text);
+  font-size: 1rem;
+}
+
+/* 404 Page */
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-content {
+  text-align: center;
+  border: 3px solid var(--cyberpunk-accent-alt);
+  padding: 4rem 3rem;
+  background-color: rgba(255, 0, 110, 0.05);
+  box-shadow: 0 0 30px rgba(255, 0, 110, 0.2);
+}
+
+.not-found-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--cyberpunk-accent-alt);
+}
+
+.not-found-content p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: var(--cyberpunk-text);
+}
+
+.back-home {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 2px solid var(--cyberpunk-accent);
+  background: linear-gradient(135deg, var(--cyberpunk-accent) 0%, var(--cyberpunk-accent-tertiary) 100%);
+  color: var(--cyberpunk-dark);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.back-home:hover {
+  box-shadow: 0 0 20px var(--cyberpunk-accent);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .content-grid,
+  .games-grid-page {
+    grid-template-columns: 1fr;
+  }
+
+  .article {
+    padding: 1.5rem;
+  }
+}

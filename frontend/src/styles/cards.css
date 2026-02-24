@@ -1,0 +1,81 @@
+.content-card,
+.game-card {
+  border: 2px solid var(--cyberpunk-accent);
+  overflow: hidden;
+  background-color: var(--cyberpunk-dark-light);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.content-card:hover,
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5), 0 0 40px rgba(179, 0, 255, 0.3);
+  border-color: var(--cyberpunk-accent-alt);
+}
+
+.card-image {
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+  background-color: var(--cyberpunk-dark);
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.content-card:hover .card-image img,
+.game-card:hover .card-image img {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0) 0%, rgba(0, 212, 255, 0.3) 100%);
+  z-index: 1;
+}
+
+.card-content {
+  padding: 1.5rem;
+  color: var(--cyberpunk-text);
+}
+
+.card-content h3 {
+  color: var(--cyberpunk-accent);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: var(--cyberpunk-text);
+}
+
+.card-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--cyberpunk-accent-tertiary);
+}
+
+.game-card .genre,
+.game-card .developer {
+  color: var(--cyberpunk-accent-alt);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.content-card {
+  text-decoration: none;
+  display: block;
+}
