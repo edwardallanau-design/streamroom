@@ -18,14 +18,20 @@ RUN npm run build
 # Runtime stage
 FROM nginx:alpine
 
-# Copy built application from builder
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy custom nginx configuration to the main config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy built application from builder to nginx html root
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Make sure permissions are correct
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
 
-# Start nginx
+# Start nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
