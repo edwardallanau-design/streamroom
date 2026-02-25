@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getContentBySlug } from '../api/client'
+import { contentService } from '../api/services/contentService'
 import '../styles/page.css'
 
 function ContentDetail() {
@@ -12,7 +12,7 @@ function ContentDetail() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await getContentBySlug(slug)
+        const response = await contentService.getBySlug(slug)
         setContent(response.data)
       } catch (err) {
         setError('Content not found')

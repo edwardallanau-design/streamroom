@@ -1,54 +1,9 @@
 .footer {
   background-color: var(--cyberpunk-dark-light);
-  border-top: 3px solid var(--cyberpunk-accent-alt);
-  margin-top: 4rem;
-  padding: 3rem 0;
-  color: var(--cyberpunk-text);
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.footer-section h3,
-.footer-section h4 {
-  color: var(--cyberpunk-accent);
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.footer-section ul {
-  list-style: none;
-}
-
-.footer-section li {
-  margin-bottom: 0.5rem;
-}
-
-.footer-section a {
-  color: var(--cyberpunk-text);
-  transition: all 0.3s ease;
-}
-
-.footer-section a:hover {
-  color: var(--cyberpunk-accent-alt);
-  text-shadow: 0 0 10px var(--cyberpunk-accent-alt);
-}
-
-.footer-bottom {
   border-top: 1px solid var(--cyberpunk-accent-tertiary);
-  padding-top: 1.5rem;
+  padding: 0.6rem 2rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--cyberpunk-accent-tertiary);
+  letter-spacing: 1px;
 }

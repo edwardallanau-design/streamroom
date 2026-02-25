@@ -1,8 +1,8 @@
 package com.streamroom.controller;
 
 import com.streamroom.dto.GameDTO;
-import com.streamroom.service.GameService;
-import lombok.RequiredArgsConstructor;
+import com.streamroom.service.IGameService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,41 +11,39 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-@RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class GameController {
-    private final GameService gameService;
+
+    private final IGameService gameService;
+
+    public GameController(IGameService gameService) {
+        this.gameService = gameService;
+    }
 
     @PostMapping
-    public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
-        GameDTO created = gameService.createGame(gameDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<GameDTO> createGame(@Valid @RequestBody GameDTO gameDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(gameService.createGame(gameDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GameDTO> updateGame(
             @PathVariable Long id,
-            @RequestBody GameDTO gameDTO) {
-        GameDTO updated = gameService.updateGame(id, gameDTO);
-        return ResponseEntity.ok(updated);
+            @Valid @RequestBody GameDTO gameDTO) {
+        return ResponseEntity.ok(gameService.updateGame(id, gameDTO));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GameDTO> getGame(@PathVariable Long id) {
-        GameDTO gameDTO = gameService.getGameById(id);
-        return ResponseEntity.ok(gameDTO);
+        return ResponseEntity.ok(gameService.getGameById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<GameDTO>> getAllGames() {
-        List<GameDTO> games = gameService.getAllGames();
-        return ResponseEntity.ok(games);
+        return ResponseEntity.ok(gameService.getAllGames());
     }
 
     @GetMapping("/featured")
     public ResponseEntity<List<GameDTO>> getFeaturedGames() {
-        List<GameDTO> games = gameService.getFeaturedGames();
-        return ResponseEntity.ok(games);
+        return ResponseEntity.ok(gameService.getFeaturedGames());
     }
 
     @DeleteMapping("/{id}")

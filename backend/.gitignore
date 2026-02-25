@@ -1,12 +1,26 @@
-# ==============================================================
-# Backend .gitignore - Spring Boot/Java/Maven
-# ==============================================================
+# ====================================================================
+# Backend — Java / Maven
+# ====================================================================
 
-# Maven
+# Maven build output
 target/
 build/
+dist/
+.build/
+bin/
+out/
+
+# Maven wrapper (downloaded at runtime)
 .mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/MavenWrapperDownloader.java
+
+# Packaged artifacts
+*.jar
+*.war
+*.nar
+*.ear
+
+# Maven release / versions plugin leftovers
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -14,37 +28,24 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 .flattened-pom.xml
-.m2repository/
 
-# Eclipse IDE
+# Compiled classes
+*.class
+
+# Spring Boot / STS
+.springBeans
+.sts4-cache/
+.spring/
+
+# Eclipse
 .classpath
 .project
+.settings/
+.metadata
+.loadpath
 .c9/
 *.launch
-.settings/
-*.sublime-workspace
-.metadata
-.class
-bin/
 local.properties
-.loadpath
-.factorypath
-
-# IntelliJ IDEA
-.idea/
-.idea_modules/
-*.iml
-*.ipr
-*.iws
-*.jks
-out/
-.idea_modules/
-*.iws
-*.iml
-*.ipr
-.idea/
-*.sublime-project
-*.sublime-workspace
 
 # NetBeans
 nbactions.xml
@@ -52,100 +53,25 @@ nbactions.xml
 .nb-gradle/
 .nb-gradle-state.xml
 
-# VS Code
-.vscode/
-.classpath
-.c9/
-*.code-workspace
-.settings/
-.vscode-test
-
-# Logs
-logs/
-*.log
-*.log.*
-.log
-
-# Compiled Class Files
-*.class
-*.classxxx
-
-# Package Files
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# Spring Boot Specific
-builds/
-.spring/
-/mvn/
-/mvnw/
-/mvnw.cmd
-
-# Environment Files
-.env
-.env.local
-.env.*.local
-application-local.properties
-application-dev.properties
-application-prod.properties
-application.properties.local
-
-# OS Files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-Thumbs.db
-ehthumbs.db
-desktop.ini
-
-# Temporary Files
-*.tmp
-*.temp
-*.bak
-*.swp
-*.swo
-*~
-~$*
-
-# Node Version
-.nvmrc
-.node-version
-
-# Gradle
+# Gradle (if ever used)
 .gradle/
-!gradle/wrapper/gradle-wrapper.jar
 gradle-app.setting
-
-# Build Output
-*.jar.asc
-*.jar.asc.sig
-build/
-dist/
-.build/
 
 # SonarQube
 .sonarlint/
 .sonarqube/
 
-# Code Coverage
+# Code coverage
 jacoco.exec
-.jacoco.exec
-*.coverage
-.coverage
-coverage.xml
 jacoco*.exec
+.jacoco/
+*.coverage
+coverage.xml
 
-# Misc
-.byebug_history
-*.swp
-*.swo
-*~
-._*
-.~*
+# Environment / secrets — .env.example and application.properties are committed
+src/main/resources/application-dev.properties
+src/main/resources/application-local.properties
+src/main/resources/application-prod.properties
+.env
+.env.local
+.env.*.local

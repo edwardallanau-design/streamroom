@@ -1,8 +1,8 @@
 package com.streamroom.controller;
 
 import com.streamroom.dto.UserDTO;
-import com.streamroom.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.streamroom.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,47 +11,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class UserController {
-    private final UserService userService;
+
+    private final IUserService userService;
+
+    public UserController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO created = userService.createUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        UserDTO userDTO = userService.getUserById(id);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
-        UserDTO userDTO = userService.getUserByUsername(username);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
     @GetMapping("/twitch/{twitchUsername}")
     public ResponseEntity<UserDTO> getUserByTwitchUsername(@PathVariable String twitchUsername) {
-        UserDTO userDTO = userService.getUserByTwitchUsername(twitchUsername);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userService.getUserByTwitchUsername(twitchUsername));
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable Long id,
-            @RequestBody UserDTO userDTO) {
-        UserDTO updated = userService.updateUser(id, userDTO);
-        return ResponseEntity.ok(updated);
+            @Valid @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
 
     @DeleteMapping("/{id}")

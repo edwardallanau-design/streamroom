@@ -1,5 +1,6 @@
 .hero {
   position: relative;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -16,99 +17,33 @@
   width: 100%;
   height: 100%;
   background-image:
-    linear-gradient(0deg, transparent 24%, rgba(0, 212, 255, 0.05) 25%, rgba(0, 212, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 212, 255, 0.05) 75%, rgba(0, 212, 255, 0.05) 76%, transparent 77%, transparent),
-    linear-gradient(90deg, transparent 24%, rgba(0, 212, 255, 0.05) 25%, rgba(0, 212, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 212, 255, 0.05) 75%, rgba(0, 212, 255, 0.05) 76%, transparent 77%, transparent);
+    linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent);
   background-size: 50px 50px;
 }
 
 .hero-content {
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 1rem 2rem;
 }
 
-.hero-title {
-  text-align: center;
-  margin-bottom: 4rem;
-  padding: 2rem;
+.twitch-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   border: 2px solid var(--cyberpunk-accent);
-  background-color: rgba(0, 212, 255, 0.05);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
-}
-
-.hero-title h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-
-.hero-title p {
-  font-size: 1.2rem;
-  color: var(--cyberpunk-accent-alt);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.hero-sections {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.twitch-section,
-.featured-section {
-  border: 2px solid var(--cyberpunk-accent);
-  padding: 2rem;
+  padding: 1rem;
   background-color: rgba(26, 26, 46, 0.8);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-}
-
-.twitch-section h2,
-.featured-section h2,
-.games-showcase h2 {
-  color: var(--cyberpunk-accent);
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 1.5rem;
-}
-
-.featured-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-.games-showcase {
-  margin-top: 4rem;
-  border: 2px solid var(--cyberpunk-accent-alt);
-  padding: 2rem;
-  background-color: rgba(26, 26, 46, 0.8);
-  box-shadow: 0 0 20px rgba(255, 0, 110, 0.1);
-}
-
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: var(--cyberpunk-accent);
-  font-size: 1.2rem;
-  animation: glow 2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
 @media (max-width: 768px) {
-  .hero-title h1 {
-    font-size: 1.8rem;
-  }
-
-  .hero-sections {
-    grid-template-columns: 1fr;
+  .twitch-section {
+    padding: 0.5rem;
   }
 }

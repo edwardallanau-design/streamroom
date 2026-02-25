@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean install -DskipTests)",
+      "WebFetch(domain:repo.maven.apache.org)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s \"https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/maven-metadata.xml\")",
+      "Bash(mvn -f /d/Projects/streamroom/backend/pom.xml dependency:tree -Dincludes=jackson)",
+      "Bash(curl -s \"https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/3.0.1/springdoc-openapi-starter-webmvc-ui-3.0.1.pom\")",
+      "Bash(jar tf ~/.m2/repository/tools/jackson/core/jackson-databind/3.0.4/jackson-databind-3.0.4.jar)",
+      "Bash(jar tf ~/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-ui/3.0.1/springdoc-openapi-starter-webmvc-ui-3.0.1.jar)",
+      "Bash(mvn clean install -DskipTests -q)"
+    ]
+  }
+}

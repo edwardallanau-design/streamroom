@@ -1,83 +1,50 @@
-# ==============================================================
-# Frontend .gitignore - React/Vite
-# ==============================================================
+# ====================================================================
+# Frontend — Node.js / React / Vite
+# ====================================================================
 
 # Dependencies
 node_modules/
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Vite / tooling cache
+.vite/
+.vitest/
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Lock files — single-developer project; not committed
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Environment — .env.example IS committed as a template
+.env
+.env.local
+.env.*.local
+
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-bun-lockb
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+pnpm-error.log*
 
-# Production Build
-dist/
-dist-ssr/
-*.local
-build/
-.parcel-cache
-.cache
-
-# Environment Variables
-.env
-.env.local
-.env.*.local
-.env.production.local
-.env.development.local
-.env.test.local
-
-# IDE and Editor
-.vscode/
-.vscode-test
-.idea/
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-*.iml
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Testing
-coverage/
-.nyc_output/
-
-# Temporary Files
-*.tmp
-*.swp
-*.swo
-*~
-~$*
-
-# OS Files
-Thumbs.db
-ehthumbs.db
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-
-# Vite
-.vite/
-.vitest/
-.cache/
-.eslintcache
-
-# Output of 'npm pack'
+# Temp / pack output
 *.tgz
+*.tmp
 
-# Yarn
+# Yarn PnP
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml

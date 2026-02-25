@@ -6,12 +6,56 @@ services:
     container_name: streamroom-postgres
     environment:
       POSTGRES_DB: streamroom
-      POSTGRES_USER: streamroom_user
-      POSTGRES_PASSWORD: streamroom_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - streamroom-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: streamroom-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/streamroom
+      SPRING_DATASOURCE_USERNAME: streamroom_user
+      SPRING_DATASOURCE_PASSWORD: streamroom_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - streamroom-network
+    healthcheck:
+      # Alpine-based image uses wget; curl is not pre-installed
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: streamroom-frontend
+    ports:
+      - '80:80'
+    depends_on:
+      backend:
+        condition: service_healthy
     networks:
       - streamroom-network
 

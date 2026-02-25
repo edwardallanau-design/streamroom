@@ -34,7 +34,7 @@
 }
 
 .error-message {
-  background-color: rgba(255, 0, 110, 0.1);
+  background-color: rgba(255, 20, 147, 0.1);
   border: 2px solid var(--cyberpunk-accent-alt);
   color: var(--cyberpunk-accent-alt);
   padding: 1.5rem;
@@ -48,7 +48,7 @@
   background-color: rgba(26, 26, 46, 0.8);
   border: 2px solid var(--cyberpunk-accent);
   padding: 3rem;
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
 .featured-image {
@@ -57,7 +57,7 @@
   object-fit: cover;
   margin-bottom: 2rem;
   border: 2px solid var(--cyberpunk-accent-tertiary);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
 }
 
 .article h1 {
@@ -94,8 +94,8 @@
   text-align: center;
   border: 3px solid var(--cyberpunk-accent-alt);
   padding: 4rem 3rem;
-  background-color: rgba(255, 0, 110, 0.05);
-  box-shadow: 0 0 30px rgba(255, 0, 110, 0.2);
+  background-color: rgba(255, 20, 147, 0.05);
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.2);
 }
 
 .not-found-content h1 {

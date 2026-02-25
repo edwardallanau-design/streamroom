@@ -1,18 +1,23 @@
 package com.streamroom.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CreateContentRequest {
-    private String title;
-    private String description;
-    private String content;
-    private String slug;
-    private String featuredImage;
-    private Long categoryId;
-    private Boolean isPublished;
-    private Boolean isFeatured;
+public record CreateContentRequest(
+        @NotBlank(message = "Title is required")
+        @Size(min = 3, max = 255, message = "Title must be between 3 and 255 characters")
+        String title,
+
+        @Size(max = 1000, message = "Description must not exceed 1000 characters")
+        String description,
+
+        @NotBlank(message = "Content is required")
+        String content,
+
+        String slug,
+        String featuredImage,
+        Long categoryId,
+        Boolean isPublished,
+        Boolean isFeatured
+) {
 }

@@ -1,7 +1,7 @@
 .header {
   background-color: var(--cyberpunk-dark-light);
   border-bottom: 3px solid var(--cyberpunk-accent);
-  padding: 1rem 0;
+  padding: 0rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -21,12 +21,55 @@
   flex: 1;
 }
 
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.logo a:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  height: 50px;
+  width: 50px;
+  filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.4)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.2));
+  transition: filter 0.3s ease;
+}
+
+.logo a:hover .logo-image {
+  filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.8)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 20px rgba(107, 0, 128, 0.4));
+}
+
 .logo-text {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 900;
   color: var(--cyberpunk-accent);
   text-transform: uppercase;
   letter-spacing: 2px;
+  background: linear-gradient(135deg, #FF1493 0%, #00FFFF 50%, #6B0080 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background: linear-gradient(135deg, #FF1493 0%, #00FFFF 50%, #6B0080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  50% {
+    background: linear-gradient(135deg, #6B0080 0%, #FF1493 50%, #00FFFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 .nav {
