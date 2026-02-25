@@ -1,6 +1,6 @@
 # StreamRoom — Cyberpunk Streaming Website
 
-A full-stack streaming website for **PiggyPlaysPH** built with React 19 and Spring Boot 4.0.3, featuring a full-viewport Twitch player, a blog/content management system, JWT-based admin authentication, and a cyberpunk aesthetic.
+A full-stack streaming website for **PiggyPlaysPH** built with React 19 and Spring Boot 4.0, featuring a full-viewport Twitch player, a role-based content management system, JWT authentication, and a cyberpunk aesthetic.
 
 **All services are fully containerized with Docker** — run the entire application stack with one command!
 
@@ -11,103 +11,121 @@ A full-stack streaming website for **PiggyPlaysPH** built with React 19 and Spri
 ```
 streamroom/
 ├── frontend/                    # React 19 + Vite application
-│   ├── src/
-│   │   ├── api/
-│   │   │   ├── client.js        # Axios instance + response interceptor
-│   │   │   └── services/        # Grouped API service modules
-│   │   │       ├── contentService.js   # Public + admin CRUD methods
-│   │   │       ├── gameService.js
-│   │   │       └── userService.js
-│   │   ├── components/
-│   │   │   ├── common/
-│   │   │   │   └── ErrorBoundary.jsx
-│   │   │   ├── AdminPanel.jsx
-│   │   │   ├── ContentCard.jsx  # Horizontal card with admin actions + delete modal
-│   │   │   ├── Footer.jsx       # Fixed to bottom of viewport
-│   │   │   ├── GameCard.jsx
-│   │   │   ├── Header.jsx
-│   │   │   ├── Hero.jsx         # Full-viewport Twitch embed
-│   │   │   ├── Layout.jsx
-│   │   │   └── TwitchEmbed.jsx
-│   │   ├── contexts/
-│   │   │   └── AuthContext.jsx  # JWT auth state + isAdmin flag
-│   │   ├── hooks/
-│   │   │   └── useApi.js        # Generic data-fetching hook
-│   │   ├── pages/
-│   │   │   ├── AdminLogin.jsx   # Admin-only login form
-│   │   │   ├── Content.jsx      # Content library (admin: all posts; guest: published only)
-│   │   │   ├── ContentDetail.jsx # Full post with HTML body render + admin edit/delete
-│   │   │   ├── ContentForm.jsx  # Create / edit post form with media toolbar
-│   │   │   ├── Games.jsx
-│   │   │   ├── Home.jsx
-│   │   │   ├── NotFound.jsx
-│   │   │   └── Profile.jsx      # Editable admin profile with schedule & socials
-│   │   └── styles/
-│   ├── public/
-│   │   └── logo.png
-│   ├── .env                     # Local secrets — never commit
-│   ├── .env.example
-│   └── vite.config.js           # /api proxy to backend + HMR polling for Docker
+│   └── src/
+│       ├── api/
+│       │   ├── client.js                    # Axios instance + JWT interceptor
+│       │   └── services/
+│       │       ├── contentService.js        # Public + admin CRUD + publishAdmin
+│       │       ├── userManagementService.js # Admin user CRUD
+│       │       ├── gameService.js
+│       │       └── profileService.js
+│       ├── components/
+│       │   ├── ContentCard.jsx  # Card with Edit / Publish / Delete + confirm modals
+│       │   ├── Header.jsx       # DASHBOARD link (any role); USERS link (canManageUsers)
+│       │   ├── Hero.jsx         # Full-viewport Twitch embed
+│       │   ├── Footer.jsx
+│       │   └── ...
+│       ├── contexts/
+│       │   └── AuthContext.jsx  # Role state + computed permission flags
+│       ├── hooks/
+│       │   └── useApi.js
+│       ├── pages/
+│       │   ├── AdminLogin.jsx    # Login form / role-aware dashboard
+│       │   ├── Content.jsx       # Content library
+│       │   ├── ContentDetail.jsx # Post detail + Publish button
+│       │   ├── ContentForm.jsx   # Create / edit post (no publish checkbox)
+│       │   ├── UserManagement.jsx # Admin user management
+│       │   ├── Games.jsx
+│       │   ├── Home.jsx
+│       │   ├── Profile.jsx
+│       │   └── NotFound.jsx
+│       └── styles/
 │
-├── backend/                     # Spring Boot 4.0.3 + Java 25
+├── backend/                     # Spring Boot 4.0 + Java 25
 │   └── src/main/java/com/streamroom/
 │       ├── config/
-│       │   ├── AdminInterceptor.java    # JWT validation for all /admin/** routes
-│       │   ├── CorsConfig.java          # Centralized CORS (property-driven)
-│       │   ├── TwitchProperties.java    # @ConfigurationProperties for Twitch
+│       │   ├── AdminInitializer.java    # Creates default ADMIN on startup; migrates legacy users
+│       │   ├── AdminInterceptor.java    # JWT validation; extracts userId + role into request attrs
+│       │   ├── CorsConfig.java
 │       │   └── WebClientConfig.java
 │       ├── controller/
-│       │   ├── AdminContentController.java  # Admin CRUD at /admin/content
-│       │   ├── AuthController.java          # POST /auth/login → JWT
+│       │   ├── AdminContentController.java  # Role-aware content CRUD + publish endpoint
+│       │   ├── AdminUserController.java     # User management (ADMIN/MOD only)
+│       │   ├── AuthController.java          # POST /admin/login → JWT + role
 │       │   ├── ContentController.java       # Public read endpoints
 │       │   ├── GameController.java
 │       │   ├── HealthController.java
-│       │   ├── ProfileController.java
-│       │   └── UserController.java
-│       ├── dto/                         # DTOs with Jakarta Validation annotations
-│       ├── entity/                      # JPA entities
+│       │   └── ProfileController.java       # Profile + password change
+│       ├── dto/
+│       │   ├── ContentDTO.java              # Timestamps as UTC ISO-8601 strings
+│       │   ├── LoginResponse.java           # token, userId, username, displayName, role
+│       │   ├── AdminUserDTO.java
+│       │   ├── CreateUserAdminRequest.java
+│       │   ├── UpdateRoleRequest.java
+│       │   ├── ChangePasswordRequest.java
+│       │   └── ...
+│       ├── entity/
+│       │   ├── Content.java   # createdAt/updatedAt/publishedAt use Instant (UTC)
+│       │   ├── User.java      # role field (Role enum)
+│       │   └── ...
+│       ├── enums/
+│       │   └── Role.java      # ADMIN, MODERATOR, CONTENT_CREATOR
 │       ├── exception/
-│       │   ├── ErrorResponse.java       # Consistent JSON error envelope
-│       │   ├── GlobalExceptionHandler.java
-│       │   └── ResourceNotFoundException.java
+│       │   ├── ForbiddenException.java         # → 403
+│       │   ├── ResourceNotFoundException.java  # → 404
+│       │   └── GlobalExceptionHandler.java
 │       ├── mapper/
-│       │   └── DtoMapper.java           # Central entity-to-DTO mapping
+│       │   └── DtoMapper.java   # Instant.toString() → "2024-01-26T14:30:00Z"
 │       ├── repository/
-│       ├── service/
-│       │   ├── IContentService.java     # Service interfaces (DIP)
-│       │   ├── IGameService.java
-│       │   ├── IUserService.java
-│       │   ├── ContentService.java
-│       │   ├── GameService.java
-│       │   ├── JwtService.java          # JWT generation + validation
-│       │   ├── SlugGeneratorService.java # Unique slug generation with collision handling
-│       │   ├── TwitchService.java
-│       │   └── UserService.java
-│       └── StreamroomApplication.java
-│   └── src/main/resources/
-│       ├── application.properties       # Shared defaults + active profile
-│       ├── application-dev.properties   # Dev secrets — gitignored
-│       └── application-prod.properties  # Prod — reads from environment variables
+│       └── service/
+│           ├── AdminUserService.java   # Permission-enforced user CRUD
+│           ├── ContentService.java
+│           ├── JwtService.java         # Claims: userId + role
+│           ├── ProfileService.java     # BCrypt password change
+│           ├── SlugGeneratorService.java
+│           └── ...
 │
-├── .githooks/                   # Git hooks (pre-push build check)
-├── docker-compose.yml           # All services: postgres, backend, frontend, frontend-dev
+├── docker-compose.yml
 └── README.md
 ```
 
 ---
 
+## Roles & Permissions
+
+Three roles control access throughout the application:
+
+| Action | ADMIN | MODERATOR | CONTENT_CREATOR |
+|---|:---:|:---:|:---:|
+| Login via `/admin` | ✓ | ✓ | ✓ |
+| View all posts (incl. drafts) | ✓ | ✓ | ✓ |
+| Create post | ✓ | ✓ | ✓ |
+| Edit any post | ✓ | ✓ | ✗ |
+| Edit own post | ✓ | ✓ | ✓ |
+| Delete any post | ✓ | ✓ | ✗ |
+| Delete own post | ✓ | ✓ | ✓ |
+| Publish / Unpublish | ✓ | ✓ | ✗ |
+| Edit profile | ✓ | ✓ | ✗ |
+| Change own password | ✓ | ✓ | ✓ |
+| Manage users | ✓ | ✓ (MOD+CC only) | ✗ |
+
+The default **ADMIN** account is created automatically on first startup using `admin.username` / `admin.password` from `application.properties`.
+
+---
+
 ## Pages
 
-| Route | Description | Auth |
+| Route | Description | Access |
 |---|---|---|
-| `/` | Home — full-viewport Twitch player with live chat | Public |
+| `/` | Home — full-viewport Twitch player | Public |
 | `/games` | Game collection | Public |
-| `/content` | Content library — published posts; admin sees all including drafts | Public |
-| `/content/:slug` | Post detail — renders HTML body with embedded media | Public |
-| `/content/new` | Create new post with media toolbar | Admin only |
-| `/content/edit/:id` | Edit existing post | Admin only |
-| `/profile` | PiggyPlaysPH profile, schedule, and socials (editable by admin) | Public |
-| `/admin` | Admin login | Public |
+| `/content` | Content library | Public (guests see published only) |
+| `/content/:slug` | Post detail with Publish/Edit/Delete actions | Public |
+| `/content/new` | Create post with media toolbar | Any role |
+| `/content/edit/:id` | Edit post | Any role (CC: own only) |
+| `/profile` | Streamer profile, schedule, socials | Public |
+| `/admin` | Login form / role-aware dashboard | Public |
+| `/admin/users` | User management | ADMIN, MODERATOR |
 
 ---
 
@@ -146,24 +164,27 @@ VITE_TWITCH_CHANNEL=piggyplaysph
 
 ---
 
-## Admin Access
+## Admin Dashboard
 
-1. Navigate to `/admin` and log in with the admin account credentials.
-2. A JWT token is stored in `localStorage` and sent as `Authorization: Bearer <token>` on all subsequent requests.
-3. All `/admin/**` routes on the backend are protected by `AdminInterceptor` — requests without a valid JWT receive `401 Unauthorized`.
+Navigate to `/admin` and log in. When authenticated, `/admin` becomes a dashboard showing:
 
-### Admin Capabilities
+- Logged-in username and role badge
+- Navigation links: Home, Games, Content Library, User Management *(ADMIN/MOD only)*, Profile
+- **Change Password** button — requires current password verification
+- **Logout** button
 
-| Feature | How |
-|---|---|
-| Create post | `/content` → NEW POST button |
-| Edit post | Card → Edit, or post detail → Edit |
-| Delete post | Card or post detail → Delete → confirm modal |
-| Publish / unpublish | Toggle in the post form |
-| Edit profile | Profile page → Edit Profile |
-| View drafts | Content library shows all posts including unpublished |
+A JWT is stored in `localStorage` and sent as `Authorization: Bearer <token>` on all subsequent requests. All `/admin/**` backend routes are protected by `AdminInterceptor` — requests without a valid token receive `401 Unauthorized`.
 
-### Content Body Editor
+---
+
+## Content Publishing Workflow
+
+1. Any logged-in role creates a post via **+ NEW POST** — new posts are saved as drafts.
+2. ADMIN and MODERATOR can publish a draft using the **Publish** button on the content card or inside the post detail. A confirmation modal is shown before the state changes.
+3. Published posts appear to all visitors. Unpublishing hides them from the public again.
+4. CONTENT_CREATOR users see all posts (including drafts from all roles) but cannot publish.
+
+### Post Body Editor
 
 The post form includes a toolbar that inserts HTML snippets at the cursor:
 
@@ -175,8 +196,6 @@ The post form includes a toolbar that inserts HTML snippets at the cursor:
 | YT | Prompts for YouTube URL → responsive `<iframe>` embed |
 | TTV | Prompts for Twitch clip URL → responsive `<iframe>` embed |
 
-The body is stored as HTML and rendered with `dangerouslySetInnerHTML` on the detail page.
-
 ---
 
 ## API Reference
@@ -186,53 +205,53 @@ The body is stored as HTML and rendered with `dangerouslySetInnerHTML` on the de
 | Method | Path | Description |
 |---|---|---|
 | GET | `/api/health` | Health check |
-| POST | `/api/auth/login` | Admin login → JWT |
 | GET | `/api/content` | All published content (newest first) |
-| GET | `/api/content/{id}` | Content by ID |
 | GET | `/api/content/slug/{slug}` | Content by slug |
 | GET | `/api/content/featured` | Featured content |
-| GET | `/api/content/author/{id}` | Content by author |
 | GET | `/api/games` | All games |
-| GET | `/api/games/{id}` | Game by ID |
 | GET | `/api/games/featured` | Featured games |
-| GET | `/api/users/{id}` | User by ID |
-| GET | `/api/users/username/{username}` | User by username |
+| GET | `/api/profile` | Public streamer profile |
 
-### Admin (JWT required — `Authorization: Bearer <token>`)
+### Admin (JWT required)
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/admin/content` | All content including drafts (newest first) |
-| POST | `/api/admin/content` | Create post |
-| PUT | `/api/admin/content/{id}` | Update post |
-| DELETE | `/api/admin/content/{id}` | Delete post |
-| GET | `/api/admin/profile` | Admin profile |
-| PUT | `/api/admin/profile` | Update admin profile |
+| Method | Path | Access | Description |
+|---|---|---|---|
+| POST | `/api/admin/login` | Public | Login → JWT + role |
+| GET | `/api/admin/content` | All roles | All posts incl. drafts |
+| POST | `/api/admin/content` | All roles | Create post |
+| PUT | `/api/admin/content/{id}` | All roles | Update post (CC: own only) |
+| PATCH | `/api/admin/content/{id}/publish` | ADMIN, MOD | Toggle published |
+| DELETE | `/api/admin/content/{id}` | All roles | Delete post (CC: own only) |
+| GET | `/api/admin/users` | ADMIN, MOD | List users |
+| POST | `/api/admin/users` | ADMIN, MOD | Create user |
+| PUT | `/api/admin/users/{id}/role` | ADMIN, MOD | Change role |
+| DELETE | `/api/admin/users/{id}` | ADMIN, MOD | Delete user |
+| GET | `/api/profile` | Public | Streamer profile |
+| PUT | `/api/admin/profile` | ADMIN, MOD | Update profile |
+| POST | `/api/admin/profile/password` | All roles | Change own password |
 
-Interactive docs:
-- **Via Docker (recommended):** `http://localhost/swagger-ui/index.html`
-- **Direct backend (local dev):** `http://localhost:8080/swagger-ui/index.html`
+Interactive docs: `http://localhost/swagger-ui/index.html` (Docker) or `http://localhost:8080/swagger-ui/index.html` (local dev)
 
 ---
 
 ## Architecture Highlights
 
-The backend follows **SOLID principles**:
+**Backend (SOLID principles):**
 
 | Principle | Implementation |
 |---|---|
-| **SRP** | `DtoMapper` handles all entity→DTO conversion; `SlugGeneratorService` owns unique slug logic; `JwtService` owns token generation/validation |
-| **OCP** | Services are extensible via interfaces; CORS origins are property-driven, not hardcoded |
-| **LSP** | Controllers depend on `IContentService`, `IGameService`, `IUserService` — swap implementations without changing callers |
-| **ISP** | Separate per-domain service interfaces; no fat shared contracts |
-| **DIP** | `TwitchProperties` via `@ConfigurationProperties`; controllers inject interfaces, not concrete classes |
+| **SRP** | `DtoMapper` handles all entity→DTO conversion; `SlugGeneratorService` owns slug logic; `JwtService` owns token generation/validation |
+| **OCP** | Services extensible via interfaces; CORS origins are property-driven |
+| **LSP** | Controllers depend on `IContentService`, `IAdminUserService`, etc. |
+| **ISP** | Separate per-domain service interfaces |
+| **DIP** | `TwitchProperties` via `@ConfigurationProperties`; controllers inject interfaces |
 
-Additional backend patterns:
+**Additional patterns:**
 - All write operations use `@Transactional`; reads use `@Transactional(readOnly = true)`
-- `@PrePersist` defaults (`isPublished = false`, `isFeatured = false`) only apply when the field is `null`, so values set before save are preserved
-- All errors return a consistent `ErrorResponse` JSON envelope (`status`, `error`, `message`, `timestamp`, `details`) via `GlobalExceptionHandler`
-- Profile-based config: `dev` uses local values, `prod` reads from environment variables — no secrets in source control
-- Slug uniqueness enforced at the application layer: `SlugGeneratorService` queries the DB and appends `-2`, `-3`, … on collision
+- JWT claims include `userId` and `role`; `AdminInterceptor` stores both as request attributes
+- `ForbiddenException` (403) enforced at the service layer for role/ownership violations
+- `Instant` (UTC) used for all `Content` timestamps; serialized via `.toString()` to guarantee `Z` suffix
+- Profile-based config: `dev` uses local values, `prod` reads from environment variables
 
 ---
 
