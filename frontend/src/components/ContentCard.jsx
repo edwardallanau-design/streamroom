@@ -14,10 +14,19 @@ function timeAgo(dateStr) {
   return `${days} day${days !== 1 ? 's' : ''} ago`
 }
 
-function ContentCard({ content, onDelete }) {
-  const { isAdmin } = useAuth()
+function ContentCard({ content, onDelete, onPublish }) {
+  const { isAdmin, isModerator, isContentCreator, userId, canPublish } = useAuth()
   const navigate = useNavigate()
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmPublish, setConfirmPublish] = useState(false)
+
+  const isOwner = content.author && content.author.id === userId
+  const canEdit = isAdmin || isModerator || (isContentCreator && isOwner)
+  const canDelete = isAdmin || isModerator || (isContentCreator && isOwner)
+  const showBadge = canPublish || isContentCreator
+
+  const nextPublished = !content.isPublished
+  const publishLabel = content.isPublished ? 'Unpublish' : 'Publish'
 
   function handleCardClick(e) {
     if (e.target.closest('.card-admin-actions')) return
@@ -34,14 +43,30 @@ function ContentCard({ content, onDelete }) {
     setConfirmDelete(true)
   }
 
-  function handleConfirm(e) {
+  function handleConfirmDelete(e) {
     e.stopPropagation()
     onDelete(content.id)
   }
 
-  function handleCancel(e) {
+  function handleCancelDelete(e) {
     e.stopPropagation()
     setConfirmDelete(false)
+  }
+
+  function handlePublishClick(e) {
+    e.stopPropagation()
+    setConfirmPublish(true)
+  }
+
+  function handleConfirmPublish(e) {
+    e.stopPropagation()
+    setConfirmPublish(false)
+    onPublish(content.id, nextPublished)
+  }
+
+  function handleCancelPublish(e) {
+    e.stopPropagation()
+    setConfirmPublish(false)
   }
 
   return (
@@ -54,7 +79,7 @@ function ContentCard({ content, onDelete }) {
       </div>
 
       <div className="card-body-side">
-        {isAdmin && (
+        {showBadge && (
           <div className="card-badge-row">
             <span className={`card-badge ${content.isPublished ? 'badge-live' : 'badge-draft'}`}>
               {content.isPublished ? 'PUBLISHED' : 'DRAFT'}
@@ -70,15 +95,23 @@ function ContentCard({ content, onDelete }) {
           {content.author && ` by ${content.author.displayName || content.author.username}`}
         </div>
 
-        {isAdmin && (
+        {(canEdit || canDelete || canPublish) && (
           <div className="card-admin-actions">
-            <button className="card-action-btn card-edit-btn" onClick={handleEdit}>Edit</button>
-            <button className="card-action-btn card-delete-btn" onClick={handleDeleteClick}>Delete</button>
+            {canEdit && <button className="card-action-btn card-edit-btn" onClick={handleEdit}>Edit</button>}
+            {canPublish && (
+              <button
+                className={`card-action-btn ${content.isPublished ? 'card-unpublish-btn' : 'card-publish-btn'}`}
+                onClick={handlePublishClick}
+              >
+                {publishLabel}
+              </button>
+            )}
+            {canDelete && <button className="card-action-btn card-delete-btn" onClick={handleDeleteClick}>Delete</button>}
           </div>
         )}
 
         {confirmDelete && createPortal(
-          <div className="delete-modal-overlay" onClick={handleCancel}>
+          <div className="delete-modal-overlay" onClick={handleCancelDelete}>
             <div className="delete-modal" onClick={e => e.stopPropagation()}>
               <div className="delete-modal-icon">⚠</div>
               <h4 className="delete-modal-title">DELETE POST</h4>
@@ -86,8 +119,28 @@ function ContentCard({ content, onDelete }) {
                 "<strong>{content.title}</strong>" will be permanently removed.
               </p>
               <div className="delete-modal-actions">
-                <button className="delete-modal-confirm" onClick={handleConfirm}>Delete</button>
-                <button className="delete-modal-cancel" onClick={handleCancel}>Cancel</button>
+                <button className="delete-modal-confirm" onClick={handleConfirmDelete}>Delete</button>
+                <button className="delete-modal-cancel" onClick={handleCancelDelete}>Cancel</button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {confirmPublish && createPortal(
+          <div className="delete-modal-overlay" onClick={handleCancelPublish}>
+            <div className="delete-modal" onClick={e => e.stopPropagation()}>
+              <div className="delete-modal-icon">{nextPublished ? '✓' : '⚠'}</div>
+              <h4 className="delete-modal-title">{publishLabel.toUpperCase()} POST</h4>
+              <p className="delete-modal-msg">
+                {nextPublished
+                  ? <>Publish "<strong>{content.title}</strong>"? It will be visible to all visitors.</>
+                  : <>Unpublish "<strong>{content.title}</strong>"? It will be hidden from visitors.</>
+                }
+              </p>
+              <div className="delete-modal-actions">
+                <button className="delete-modal-confirm" onClick={handleConfirmPublish}>{publishLabel}</button>
+                <button className="delete-modal-cancel" onClick={handleCancelPublish}>Cancel</button>
               </div>
             </div>
           </div>,

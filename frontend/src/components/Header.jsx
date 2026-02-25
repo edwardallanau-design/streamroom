@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import { useAuth } from '../contexts/AuthContext'
 import '../styles/header.css'
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { hasAnyRole, canManageUsers } = useAuth()
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
@@ -29,6 +31,8 @@ function Header() {
           <Link to="/games" className="nav-link">GAMES</Link>
           <Link to="/content" className="nav-link">CONTENT</Link>
           <Link to="/profile" className="nav-link">PROFILE</Link>
+          {hasAnyRole && <Link to="/admin" className="nav-link">DASHBOARD</Link>}
+          {canManageUsers && <Link to="/admin/users" className="nav-link">USERS</Link>}
         </nav>
       </div>
     </header>

@@ -188,14 +188,6 @@ function ContentForm() {
             placeholder="Write your post body here. Use the toolbar to embed images and videos."
           />
 
-          <label className="post-form-check-label">
-            <input
-              type="checkbox"
-              checked={form.isPublished}
-              onChange={e => setField('isPublished', e.target.checked)}
-            />
-            Published
-          </label>
         </div>
 
         <div className="profile-edit-actions" style={{ marginTop: '2rem' }}>

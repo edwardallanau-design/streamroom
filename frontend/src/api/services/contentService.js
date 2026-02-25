@@ -13,4 +13,5 @@ export const contentService = {
   createAdmin: (data) => api.post('/admin/content', data),
   updateAdmin: (id, data) => api.put(`/admin/content/${id}`, data),
   removeAdmin: (id) => api.delete(`/admin/content/${id}`),
+  publishAdmin: (id, isPublished) => api.patch(`/admin/content/${id}/publish`, { isPublished }),
 }

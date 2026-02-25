@@ -1,5 +1,6 @@
 package com.streamroom.service;
 
+import com.streamroom.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -24,21 +25,26 @@ public class JwtService {
         this.expirationMs = expirationMs;
     }
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .subject(username)
+                .subject(user.getUsername())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole() != null ? user.getRole().name() : null)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key)
                 .compact();
     }
 
-    public String validateToken(String token) {
-        Claims claims = Jwts.parser()
+    public Claims getClaims(String token) {
+        return Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims.getSubject();
+    }
+
+    public String validateToken(String token) {
+        return getClaims(token).getSubject();
     }
 }

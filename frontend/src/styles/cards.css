@@ -87,6 +87,7 @@
 
 .card-image-side {
   width: 260px;
+  min-height: 160px;
   flex-shrink: 0;
   overflow: hidden;
   background-color: var(--cyberpunk-dark);
@@ -199,6 +200,26 @@
 
 .card-edit-btn:hover {
   background: rgba(0, 255, 255, 0.2);
+}
+
+.card-publish-btn {
+  border: 1px solid #00ff88;
+  background: rgba(0, 255, 136, 0.08);
+  color: #00ff88;
+}
+
+.card-publish-btn:hover {
+  background: rgba(0, 255, 136, 0.2);
+}
+
+.card-unpublish-btn {
+  border: 1px solid rgba(255, 200, 0, 0.7);
+  background: rgba(255, 200, 0, 0.08);
+  color: rgba(255, 200, 0, 0.9);
+}
+
+.card-unpublish-btn:hover {
+  background: rgba(255, 200, 0, 0.18);
 }
 
 .card-delete-btn {

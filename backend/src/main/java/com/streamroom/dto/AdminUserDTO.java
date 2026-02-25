@@ -1,9 +1,9 @@
 package com.streamroom.dto;
 
-public record LoginResponse(
-        String token,
-        Long userId,
+public record AdminUserDTO(
+        Long id,
         String username,
         String displayName,
+        String email,
         String role
 ) {}

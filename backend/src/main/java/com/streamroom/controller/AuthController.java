@@ -27,14 +27,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         User user = userRepository.findByUsername(request.username())
-                .filter(u -> Boolean.TRUE.equals(u.getIsAdmin()))
+                .filter(u -> u.getRole() != null)
                 .orElse(null);
 
         if (user == null || !passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             return ResponseEntity.status(401).build();
         }
 
-        String token = jwtService.generateToken(user.getUsername());
-        return ResponseEntity.ok(new LoginResponse(token, user.getId(), user.getUsername(), user.getDisplayName()));
+        String token = jwtService.generateToken(user);
+        String role = user.getRole().name();
+        return ResponseEntity.ok(new LoginResponse(token, user.getId(), user.getUsername(), user.getDisplayName(), role));
     }
 }

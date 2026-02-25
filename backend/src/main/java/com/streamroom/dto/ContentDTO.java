@@ -1,6 +1,5 @@
 package com.streamroom.dto;
 
-import java.time.LocalDateTime;
 
 public record ContentDTO(
         Long id,
@@ -13,8 +12,8 @@ public record ContentDTO(
         CategoryDTO category,
         Boolean isPublished,
         Boolean isFeatured,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        LocalDateTime publishedAt
+        String createdAt,
+        String updatedAt,
+        String publishedAt
 ) {
 }

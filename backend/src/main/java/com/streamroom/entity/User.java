@@ -1,5 +1,6 @@
 package com.streamroom.entity;
 
+import com.streamroom.enums.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class User {
 
     @Column(nullable = false)
     private Boolean isAdmin;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     private String passwordHash;
@@ -104,6 +108,9 @@ public class User {
 
     public Boolean getIsAdmin() { return isAdmin; }
     public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }

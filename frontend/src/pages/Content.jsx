@@ -6,18 +6,32 @@ import ContentCard from '../components/ContentCard'
 import '../styles/page.css'
 
 function Content() {
-  const { isAdmin } = useAuth()
+  const { hasAnyRole, isAdmin, isModerator } = useAuth()
   const navigate = useNavigate()
 
-  const fetchFn = isAdmin ? contentService.getAllAdmin : contentService.getAll
-  const { data: content, loading, error, refetch } = useApi(fetchFn, [isAdmin])
+  const fetchFn = (isAdmin || isModerator)
+    ? contentService.getAllAdmin
+    : hasAnyRole
+      ? contentService.getAllAdmin  // CONTENT_CREATOR — backend filters to own posts
+      : contentService.getAll
+
+  const { data: content, loading, error, refetch } = useApi(fetchFn, [hasAnyRole, isAdmin, isModerator])
 
   async function handleDelete(id) {
     try {
       await contentService.removeAdmin(id)
       refetch()
     } catch (err) {
-      alert(err.message || 'Failed to delete post.')
+      alert(err.response?.data?.message || err.message || 'Failed to delete post.')
+    }
+  }
+
+  async function handlePublish(id, isPublished) {
+    try {
+      await contentService.publishAdmin(id, isPublished)
+      refetch()
+    } catch (err) {
+      alert(err.response?.data?.message || err.message || 'Failed to update publish status.')
     }
   }
 
@@ -26,7 +40,7 @@ function Content() {
       <div className="page-header">
         <h1 className="glow-text">CONTENT LIBRARY</h1>
         <p>Explore our collection of articles and guides</p>
-        {isAdmin && (
+        {hasAnyRole && (
           <button className="new-post-btn" onClick={() => navigate('/content/new')}>
             + NEW POST
           </button>
@@ -47,7 +61,7 @@ function Content() {
       ) : (
         <div className="content-list">
           {(content ?? []).map((item) => (
-            <ContentCard key={item.id} content={item} onDelete={handleDelete} />
+            <ContentCard key={item.id} content={item} onDelete={handleDelete} onPublish={handlePublish} />
           ))}
         </div>
       )}

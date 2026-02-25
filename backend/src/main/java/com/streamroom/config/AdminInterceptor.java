@@ -1,6 +1,7 @@
 package com.streamroom.config;
 
 import com.streamroom.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,9 @@ public class AdminInterceptor implements HandlerInterceptor {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
-                jwtService.validateToken(token);
+                Claims claims = jwtService.getClaims(token);
+                request.setAttribute("role", claims.get("role", String.class));
+                request.setAttribute("userId", claims.get("userId", Long.class));
                 return true;
             } catch (Exception ignored) {
                 // fall through to 401
