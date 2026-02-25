@@ -33,10 +33,8 @@ public class ProfileService implements IProfileService {
         if (req.bio() != null) admin.setBio(req.bio());
         if (req.profileImage() != null) admin.setProfileImage(req.profileImage());
         if (req.twitchUsername() != null) admin.setTwitchUsername(req.twitchUsername());
-        if (req.twitchUrl() != null) admin.setTwitchUrl(req.twitchUrl());
-        if (req.discordUrl() != null) admin.setDiscordUrl(req.discordUrl());
-        if (req.twitterUrl() != null) admin.setTwitterUrl(req.twitterUrl());
         if (req.schedule() != null) admin.setSchedule(req.schedule());
+        if (req.socials() != null) admin.setSocials(req.socials());
         if (req.followerCount() != null) admin.setFollowerCount(req.followerCount());
         if (req.streamCount() != null) admin.setStreamCount(req.streamCount());
         if (req.hoursStreamed() != null) admin.setHoursStreamed(req.hoursStreamed());
@@ -51,10 +49,8 @@ public class ProfileService implements IProfileService {
                 u.getBio(),
                 u.getProfileImage(),
                 u.getTwitchUsername(),
-                u.getTwitchUrl(),
-                u.getDiscordUrl(),
-                u.getTwitterUrl(),
                 u.getSchedule(),
+                u.getSocials(),
                 u.getFollowerCount(),
                 u.getStreamCount(),
                 u.getHoursStreamed()

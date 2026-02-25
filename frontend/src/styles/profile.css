@@ -191,8 +191,15 @@
   letter-spacing: 2px;
   text-transform: uppercase;
   text-align: center;
-  border: 1px solid;
+  border: 1px solid var(--cyberpunk-accent);
+  color: var(--cyberpunk-accent);
   transition: all 0.2s ease;
+}
+
+.social-link:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+  color: var(--cyberpunk-accent);
 }
 
 .social-link.twitch {

@@ -6,10 +6,8 @@ public record ProfileDTO(
         String bio,
         String profileImage,
         String twitchUsername,
-        String twitchUrl,
-        String discordUrl,
-        String twitterUrl,
         String schedule,
+        String socials,
         Integer followerCount,
         Integer streamCount,
         Integer hoursStreamed

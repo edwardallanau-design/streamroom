@@ -8,10 +8,8 @@ public record ProfileUpdateRequest(
         @Size(max = 2000) String bio,
         @Size(max = 500) String profileImage,
         @Size(max = 100) String twitchUsername,
-        @Size(max = 300) String twitchUrl,
-        @Size(max = 300) String discordUrl,
-        @Size(max = 300) String twitterUrl,
         String schedule,
+        String socials,
         Integer followerCount,
         Integer streamCount,
         Integer hoursStreamed

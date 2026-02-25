@@ -42,8 +42,8 @@ public class AdminInitializer implements CommandLineRunner {
         admin.setTagline("Cyberpunk vibes. No cap.");
         admin.setBio("Welcome to StreamRoom — a cyberpunk-themed streaming hub built for gamers and content lovers.");
         admin.setTwitchUsername(adminUsername);
-        admin.setTwitchUrl("https://twitch.tv/" + adminUsername);
         admin.setSchedule("[{\"days\":\"MON – WED\",\"time\":\"7 PM – 10 PM\"},{\"days\":\"FRI\",\"time\":\"8 PM – 12 AM\"},{\"days\":\"SAT\",\"time\":\"3 PM – 8 PM\"}]");
+        admin.setSocials("[{\"name\":\"Twitch\",\"url\":\"https://twitch.tv/" + adminUsername + "\"},{\"name\":\"Discord\",\"url\":\"https://discord.gg/\"},{\"name\":\"Twitter\",\"url\":\"https://twitter.com/" + adminUsername + "\"}]");
         admin.setFollowerCount(1200);
         admin.setStreamCount(348);
         admin.setHoursStreamed(4800);

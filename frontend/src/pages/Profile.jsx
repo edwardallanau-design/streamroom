@@ -9,7 +9,7 @@ function formatStat(n) {
   return String(n)
 }
 
-function parseSchedule(raw) {
+function parseJSON(raw) {
   if (!raw) return []
   try { return JSON.parse(raw) } catch { return [] }
 }
@@ -18,16 +18,18 @@ function serializeSchedule(rows) {
   return JSON.stringify(rows.filter(r => r.days.trim() || r.time.trim()))
 }
 
+function serializeSocials(rows) {
+  return JSON.stringify(rows.filter(r => r.name.trim() || r.url.trim()))
+}
+
 const DEFAULT_PROFILE = {
   displayName: '',
   tagline: '',
   bio: '',
   profileImage: '',
   twitchUsername: '',
-  twitchUrl: '',
-  discordUrl: '',
-  twitterUrl: '',
   schedule: '[]',
+  socials: '[]',
   followerCount: null,
   streamCount: null,
   hoursStreamed: null,
@@ -39,6 +41,7 @@ function Profile() {
   const [editing, setEditing] = useState(false)
   const [form, setForm] = useState(null)
   const [scheduleRows, setScheduleRows] = useState([])
+  const [socialRows, setSocialRows] = useState([])
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -50,7 +53,8 @@ function Profile() {
 
   function startEdit() {
     setForm({ ...profile })
-    setScheduleRows(parseSchedule(profile.schedule))
+    setScheduleRows(parseJSON(profile.schedule))
+    setSocialRows(parseJSON(profile.socials))
     setError('')
     setEditing(true)
   }
@@ -59,6 +63,7 @@ function Profile() {
     setEditing(false)
     setForm(null)
     setScheduleRows([])
+    setSocialRows([])
     setError('')
   }
 
@@ -66,7 +71,11 @@ function Profile() {
     setSaving(true)
     setError('')
     try {
-      const payload = { ...form, schedule: serializeSchedule(scheduleRows) }
+      const payload = {
+        ...form,
+        schedule: serializeSchedule(scheduleRows),
+        socials: serializeSocials(socialRows),
+      }
       const updated = await profileService.updateProfile(payload)
       setProfile(updated)
       setEditing(false)
@@ -81,16 +90,26 @@ function Profile() {
     setForm(f => ({ ...f, [key]: value }))
   }
 
+  // Schedule
   function addScheduleRow() {
     setScheduleRows(rows => [...rows, { days: '', time: '' }])
   }
-
   function updateScheduleRow(i, key, value) {
     setScheduleRows(rows => rows.map((r, idx) => idx === i ? { ...r, [key]: value } : r))
   }
-
   function removeScheduleRow(i) {
     setScheduleRows(rows => rows.filter((_, idx) => idx !== i))
+  }
+
+  // Socials
+  function addSocialRow() {
+    setSocialRows(rows => [...rows, { name: '', url: '' }])
+  }
+  function updateSocialRow(i, key, value) {
+    setSocialRows(rows => rows.map((r, idx) => idx === i ? { ...r, [key]: value } : r))
+  }
+  function removeSocialRow(i) {
+    setSocialRows(rows => rows.filter((_, idx) => idx !== i))
   }
 
   if (!profile) {
@@ -101,7 +120,8 @@ function Profile() {
     )
   }
 
-  const scheduleList = parseSchedule(profile.schedule)
+  const scheduleList = parseJSON(profile.schedule)
+  const socialList = parseJSON(profile.socials)
 
   return (
     <div className="page-container">
@@ -175,14 +195,6 @@ function Profile() {
               <input type="number" value={form.streamCount ?? ''} onChange={e => setField('streamCount', e.target.value ? Number(e.target.value) : null)} />
               <label>Hours Streamed</label>
               <input type="number" value={form.hoursStreamed ?? ''} onChange={e => setField('hoursStreamed', e.target.value ? Number(e.target.value) : null)} />
-
-              <h3 style={{ marginTop: '1.5rem' }}>Socials</h3>
-              <label>Twitch URL</label>
-              <input value={form.twitchUrl || ''} onChange={e => setField('twitchUrl', e.target.value)} />
-              <label>Discord URL</label>
-              <input value={form.discordUrl || ''} onChange={e => setField('discordUrl', e.target.value)} />
-              <label>Twitter URL</label>
-              <input value={form.twitterUrl || ''} onChange={e => setField('twitterUrl', e.target.value)} />
             </div>
 
             <div className="profile-edit-section profile-edit-section--full">
@@ -203,6 +215,26 @@ function Profile() {
                 </div>
               ))}
               <button className="schedule-add-btn" onClick={addScheduleRow}>+ Add Row</button>
+            </div>
+
+            <div className="profile-edit-section profile-edit-section--full">
+              <h3>Socials</h3>
+              {socialRows.map((row, i) => (
+                <div key={i} className="schedule-edit-row">
+                  <input
+                    placeholder="Name (e.g. Twitch)"
+                    value={row.name}
+                    onChange={e => updateSocialRow(i, 'name', e.target.value)}
+                  />
+                  <input
+                    placeholder="URL (e.g. https://twitch.tv/...)"
+                    value={row.url}
+                    onChange={e => updateSocialRow(i, 'url', e.target.value)}
+                  />
+                  <button className="schedule-remove-btn" onClick={() => removeSocialRow(i)} title="Remove">✕</button>
+                </div>
+              ))}
+              <button className="schedule-add-btn" onClick={addSocialRow}>+ Add Social</button>
             </div>
           </div>
 
@@ -241,20 +273,15 @@ function Profile() {
 
           <div className="profile-section">
             <h2>Socials</h2>
-            <div className="social-links">
-              {profile.twitchUrl && (
-                <a href={profile.twitchUrl} target="_blank" rel="noreferrer" className="social-link twitch">Twitch</a>
-              )}
-              {profile.discordUrl && (
-                <a href={profile.discordUrl} target="_blank" rel="noreferrer" className="social-link discord">Discord</a>
-              )}
-              {profile.twitterUrl && (
-                <a href={profile.twitterUrl} target="_blank" rel="noreferrer" className="social-link twitter">Twitter</a>
-              )}
-              {!profile.twitchUrl && !profile.discordUrl && !profile.twitterUrl && (
-                <p style={{ opacity: 0.5, fontSize: '0.8rem' }}>No socials set.</p>
-              )}
-            </div>
+            {socialList.length > 0 ? (
+              <div className="social-links">
+                {socialList.map((s, i) => (
+                  <a key={i} href={s.url} target="_blank" rel="noreferrer" className="social-link">{s.name}</a>
+                ))}
+              </div>
+            ) : (
+              <p style={{ opacity: 0.5, fontSize: '0.8rem' }}>No socials set.</p>
+            )}
           </div>
         </div>
       )}

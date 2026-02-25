@@ -19,9 +19,16 @@ public class User {
     private String email;
 
     private String displayName;
+
+    @Column(columnDefinition = "TEXT")
     private String bio;
+
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
+
+    @Column(columnDefinition = "TEXT")
     private String bannerImage;
+
     private String twitchUsername;
     private String twitchUserId;
 
@@ -32,12 +39,21 @@ public class User {
     private String passwordHash;
 
     private String tagline;
+
+    @Column(columnDefinition = "TEXT")
     private String twitchUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String discordUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String twitterUrl;
 
     @Column(columnDefinition = "TEXT")
     private String schedule;
+
+    @Column(columnDefinition = "TEXT")
+    private String socials;
 
     private Integer followerCount;
     private Integer streamCount;
@@ -106,6 +122,9 @@ public class User {
 
     public String getSchedule() { return schedule; }
     public void setSchedule(String schedule) { this.schedule = schedule; }
+
+    public String getSocials() { return socials; }
+    public void setSocials(String socials) { this.socials = socials; }
 
     public Integer getFollowerCount() { return followerCount; }
     public void setFollowerCount(Integer followerCount) { this.followerCount = followerCount; }
