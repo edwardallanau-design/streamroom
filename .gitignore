@@ -43,6 +43,11 @@ docker-compose.override.yml
 ~$*
 .~*
 
+# Environment / secrets — .env.example IS committed as a template
+.env
+.env.local
+.env.*.local
+
 # Secrets and certificates
 *.pem
 *.key
