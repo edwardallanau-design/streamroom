@@ -15,6 +15,37 @@
   z-index: 9999;
 }
 
+.twitch-chat--hidden {
+  display: none;
+}
+
+.chat-toggle {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 20px;
+  height: 20%;
+  padding: 0;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid var(--cyberpunk-accent);
+  border-radius: 2px;
+  color: var(--cyberpunk-accent);
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  font-weight: normal;
+  text-transform: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.chat-toggle:hover {
+  background: rgba(0, 255, 255, 0.15);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+  transform: none;
+}
+
 .twitch-embed iframe {
   border: 2px solid var(--cyberpunk-accent);
   border-radius: 4px;
