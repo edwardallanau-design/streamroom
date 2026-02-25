@@ -1,0 +1,6 @@
+#!/bin/sh
+echo ""
+echo ">> post-commit: rebuilding Docker containers..."
+docker compose down
+docker compose up --build -d
+echo ">> Docker containers are up."
