@@ -6,8 +6,8 @@ services:
     container_name: streamroom-postgres
     environment:
       POSTGRES_DB: streamroom
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${DB_USERNAME:-streamroom_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-streamroom_password}
     ports:
       - '5432:5432'
     volumes:
@@ -28,8 +28,13 @@ services:
     container_name: streamroom-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/streamroom
-      SPRING_DATASOURCE_USERNAME: streamroom_user
-      SPRING_DATASOURCE_PASSWORD: streamroom_password
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-streamroom_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-streamroom_password}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID}
+      TWITCH_ACCESS_TOKEN: ${TWITCH_ACCESS_TOKEN}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - '8080:8080'
