@@ -9,6 +9,7 @@ import ContentDetail from './pages/ContentDetail'
 import ContentForm from './pages/ContentForm'
 import Profile from './pages/Profile'
 import AdminLogin from './pages/AdminLogin'
+import UserManagement from './pages/UserManagement'
 import NotFound from './pages/NotFound'
 import './styles/globals.css'
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/content/:slug" element={<ContentDetail />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/users" element={<UserManagement />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

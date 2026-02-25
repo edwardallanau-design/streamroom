@@ -3,7 +3,6 @@ package com.streamroom.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 
 public record GameDTO(
         Long id,
@@ -25,6 +24,6 @@ public record GameDTO(
 
         CategoryDTO category,
         Boolean isFeatured,
-        LocalDateTime createdAt
+        String createdAt
 ) {
 }

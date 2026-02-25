@@ -24,5 +24,7 @@ public interface IContentService {
 
     List<ContentDTO> getAllContent();
 
-    ContentDTO createContentAdmin(CreateContentRequest request);
+    ContentDTO createContentAdmin(CreateContentRequest request, Long authorId);
+
+    ContentDTO publishContent(Long id, Boolean isPublished);
 }

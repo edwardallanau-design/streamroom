@@ -2,7 +2,7 @@ package com.streamroom.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "content")
@@ -39,24 +39,24 @@ public class Content {
     private Boolean isFeatured;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
-    private LocalDateTime publishedAt;
+    private Instant updatedAt;
+    private Instant publishedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
         if (isPublished == null) isPublished = false;
         if (isFeatured == null) isFeatured = false;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
         if (isPublished && publishedAt == null) {
-            publishedAt = LocalDateTime.now();
+            publishedAt = Instant.now();
         }
     }
 
@@ -140,15 +140,15 @@ public class Content {
         this.isFeatured = isFeatured;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public LocalDateTime getPublishedAt() {
+    public Instant getPublishedAt() {
         return publishedAt;
     }
 }

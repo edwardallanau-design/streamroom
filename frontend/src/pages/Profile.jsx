@@ -36,7 +36,7 @@ const DEFAULT_PROFILE = {
 }
 
 function Profile() {
-  const { isAdmin, logout } = useAuth()
+  const { isAdmin } = useAuth()
   const [profile, setProfile] = useState(null)
   const [editing, setEditing] = useState(false)
   const [form, setForm] = useState(null)
@@ -161,7 +161,6 @@ function Profile() {
         {isAdmin && !editing && (
           <div className="profile-admin-actions">
             <button className="profile-edit-btn" onClick={startEdit}>Edit Profile</button>
-            <button className="profile-logout-btn" onClick={logout}>Logout</button>
           </div>
         )}
       </div>

@@ -136,11 +136,21 @@ public class ContentService implements IContentService {
 
     @Override
     @Transactional
-    public ContentDTO createContentAdmin(CreateContentRequest request) {
-        log.info("Creating content '{}' as admin", request.title());
+    public ContentDTO publishContent(Long id, Boolean isPublished) {
+        log.info("Setting isPublished={} for content id={}", isPublished, id);
+        Content content = contentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Content", id));
+        content.setIsPublished(isPublished);
+        return mapper.toContentDTO(contentRepository.save(content));
+    }
 
-        User author = userRepository.findFirstByIsAdminTrue()
-                .orElseThrow(() -> new ResourceNotFoundException("User", "isAdmin=true"));
+    @Override
+    @Transactional
+    public ContentDTO createContentAdmin(CreateContentRequest request, Long authorId) {
+        log.info("Creating content '{}' for author id={}", request.title(), authorId);
+
+        User author = userRepository.findById(authorId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", authorId));
 
         var content = new Content();
         content.setTitle(request.title());

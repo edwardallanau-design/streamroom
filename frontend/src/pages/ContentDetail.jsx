@@ -9,11 +9,16 @@ import '../styles/cards.css'
 function ContentDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isModerator, isContentCreator, userId, canPublish } = useAuth()
+  const isOwner = c => c?.author?.id === userId
+  const canEdit = c => isAdmin || isModerator || (isContentCreator && isOwner(c))
+  const canDelete = c => isAdmin || isModerator || (isContentCreator && isOwner(c))
+
   const [content, setContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmPublish, setConfirmPublish] = useState(false)
 
   useEffect(() => {
     contentService.getBySlug(slug)
@@ -31,9 +36,23 @@ function ContentDetail() {
     }
   }
 
+  async function handlePublish() {
+    const next = !content.isPublished
+    try {
+      const res = await contentService.publishAdmin(content.id, next)
+      setContent(res.data)
+      setConfirmPublish(false)
+    } catch (err) {
+      setError(err.message || 'Failed to update publish status.')
+    }
+  }
+
   if (loading) return <div className="loading">LOADING...</div>
   if (error) return <div className="error-message">{error}</div>
   if (!content) return <div className="error-message">Content not found</div>
+
+  const nextPublished = !content.isPublished
+  const publishLabel = content.isPublished ? 'Unpublish' : 'Publish'
 
   return (
     <div className="page-container">
@@ -45,20 +64,32 @@ function ContentDetail() {
         <div className="article-meta">
           <span>{new Date(content.createdAt).toLocaleDateString()}</span>
           {content.author && <span>by {content.author.displayName || content.author.username}</span>}
-          {isAdmin && (
+          {(canEdit(content) || canDelete(content) || canPublish) && (
             <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
-              <button
-                className="card-action-btn card-edit-btn"
-                onClick={() => navigate(`/content/edit/${content.id}`)}
-              >
-                Edit
-              </button>
-              <button
-                className="card-action-btn card-delete-btn"
-                onClick={() => setConfirmDelete(true)}
-              >
-                Delete
-              </button>
+              {canEdit(content) && (
+                <button
+                  className="card-action-btn card-edit-btn"
+                  onClick={() => navigate(`/content/edit/${content.id}`)}
+                >
+                  Edit
+                </button>
+              )}
+              {canPublish && (
+                <button
+                  className={`card-action-btn ${content.isPublished ? 'card-unpublish-btn' : 'card-publish-btn'}`}
+                  onClick={() => setConfirmPublish(true)}
+                >
+                  {publishLabel}
+                </button>
+              )}
+              {canDelete(content) && (
+                <button
+                  className="card-action-btn card-delete-btn"
+                  onClick={() => setConfirmDelete(true)}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -82,6 +113,26 @@ function ContentDetail() {
             <div className="delete-modal-actions">
               <button className="delete-modal-confirm" onClick={handleDelete}>Delete</button>
               <button className="delete-modal-cancel" onClick={() => setConfirmDelete(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {confirmPublish && createPortal(
+        <div className="delete-modal-overlay" onClick={() => setConfirmPublish(false)}>
+          <div className="delete-modal" onClick={e => e.stopPropagation()}>
+            <div className="delete-modal-icon">{nextPublished ? '✓' : '⚠'}</div>
+            <h4 className="delete-modal-title">{publishLabel.toUpperCase()} POST</h4>
+            <p className="delete-modal-msg">
+              {nextPublished
+                ? <>Publish "<strong>{content.title}</strong>"? It will be visible to all visitors.</>
+                : <>Unpublish "<strong>{content.title}</strong>"? It will be hidden from visitors.</>
+              }
+            </p>
+            <div className="delete-modal-actions">
+              <button className="delete-modal-confirm" onClick={handlePublish}>{publishLabel}</button>
+              <button className="delete-modal-cancel" onClick={() => setConfirmPublish(false)}>Cancel</button>
             </div>
           </div>
         </div>,

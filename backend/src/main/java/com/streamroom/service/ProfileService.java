@@ -1,19 +1,25 @@
 package com.streamroom.service;
 
+import com.streamroom.dto.ChangePasswordRequest;
 import com.streamroom.dto.ProfileDTO;
 import com.streamroom.dto.ProfileUpdateRequest;
 import com.streamroom.entity.User;
 import com.streamroom.exception.ResourceNotFoundException;
 import com.streamroom.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class ProfileService implements IProfileService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public ProfileService(UserRepository userRepository) {
+    public ProfileService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -24,6 +30,7 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
+    @Transactional
     public ProfileDTO updateProfile(ProfileUpdateRequest req) {
         User admin = userRepository.findFirstByIsAdminTrue()
                 .orElseThrow(() -> new ResourceNotFoundException("Admin", "isAdmin=true"));
@@ -40,6 +47,20 @@ public class ProfileService implements IProfileService {
         if (req.hoursStreamed() != null) admin.setHoursStreamed(req.hoursStreamed());
 
         return toDTO(userRepository.save(admin));
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(ChangePasswordRequest req, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        if (!passwordEncoder.matches(req.currentPassword(), user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(req.newPassword()));
+        userRepository.save(user);
     }
 
     private ProfileDTO toDTO(User u) {

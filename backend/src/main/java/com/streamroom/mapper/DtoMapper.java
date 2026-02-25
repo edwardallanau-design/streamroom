@@ -49,9 +49,9 @@ public class DtoMapper {
                 toCategoryDTO(content.getCategory()),
                 content.getIsPublished(),
                 content.getIsFeatured(),
-                content.getCreatedAt(),
-                content.getUpdatedAt(),
-                content.getPublishedAt()
+                content.getCreatedAt() != null ? content.getCreatedAt().toString() : null,
+                content.getUpdatedAt() != null ? content.getUpdatedAt().toString() : null,
+                content.getPublishedAt() != null ? content.getPublishedAt().toString() : null
         );
     }
 
@@ -66,7 +66,7 @@ public class DtoMapper {
                 game.getDeveloper(),
                 toCategoryDTO(game.getCategory()),
                 game.getIsFeatured(),
-                game.getCreatedAt()
+                game.getCreatedAt() != null ? game.getCreatedAt().toString() + "Z" : null
         );
     }
 }

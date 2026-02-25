@@ -1,6 +1,7 @@
 package com.streamroom.config;
 
 import com.streamroom.entity.User;
+import com.streamroom.enums.Role;
 import com.streamroom.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,14 @@ public class AdminInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Migrate any existing admin users that don't yet have a role set
+        userRepository.findAll().stream()
+                .filter(u -> Boolean.TRUE.equals(u.getIsAdmin()) && u.getRole() == null)
+                .forEach(u -> {
+                    u.setRole(Role.ADMIN);
+                    userRepository.save(u);
+                });
+
         if (userRepository.existsByIsAdminTrue()) {
             return;
         }
@@ -39,6 +48,7 @@ public class AdminInitializer implements CommandLineRunner {
         admin.setDisplayName(adminUsername);
         admin.setPasswordHash(passwordEncoder.encode(adminPassword));
         admin.setIsAdmin(true);
+        admin.setRole(Role.ADMIN);
         admin.setTagline("Cyberpunk vibes. No cap.");
         admin.setBio("Welcome to StreamRoom — a cyberpunk-themed streaming hub built for gamers and content lovers.");
         admin.setTwitchUsername(adminUsername);
