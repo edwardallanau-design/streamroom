@@ -1,27 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { getContent } from '../api/client'
+import { contentService } from '../api/services/contentService'
+import { useApi } from '../hooks/useApi'
 import ContentCard from '../components/ContentCard'
 import '../styles/page.css'
 
 function Content() {
-  const [content, setContent] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await getContent()
-        setContent(response.data)
-      } catch (err) {
-        setError('Failed to load content')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchContent()
-  }, [])
+  const { data: content, loading, error, refetch } = useApi(() => contentService.getAll())
 
   return (
     <div className="page-container">
@@ -30,13 +13,18 @@ function Content() {
         <p>Explore our collection of articles and guides</p>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={refetch} style={{ marginLeft: '1rem' }}>RETRY</button>
+        </div>
+      )}
 
       {loading ? (
         <div className="loading">LOADING CONTENT...</div>
       ) : (
         <div className="content-grid">
-          {content.map((item) => (
+          {(content ?? []).map((item) => (
             <ContentCard key={item.id} content={item} />
           ))}
         </div>

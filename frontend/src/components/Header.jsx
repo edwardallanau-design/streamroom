@@ -15,7 +15,8 @@ function Header() {
       <div className="header-container">
         <div className="logo">
           <Link to="/">
-            <span className="logo-text glow-text">[STREAM.ROOM]</span>
+            <img src="/logo.png" alt="PiggyPlaysPH" className="logo-image" />
+            <span className="logo-text">PiggyPlaysPH</span>
           </Link>
         </div>
 
@@ -27,6 +28,7 @@ function Header() {
           <Link to="/" className="nav-link">HOME</Link>
           <Link to="/games" className="nav-link">GAMES</Link>
           <Link to="/content" className="nav-link">CONTENT</Link>
+          <Link to="/profile" className="nav-link">PROFILE</Link>
           <Link to="/" className="nav-link cta">ADMIN</Link>
         </nav>
       </div>

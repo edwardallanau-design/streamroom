@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Games from './pages/Games'
 import Content from './pages/Content'
 import ContentDetail from './pages/ContentDetail'
+import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import './styles/globals.css'
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/games" element={<Games />} />
           <Route path="/content" element={<Content />} />
           <Route path="/content/:slug" element={<ContentDetail />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

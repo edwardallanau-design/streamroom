@@ -1,0 +1,260 @@
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  border: 2px solid var(--cyberpunk-accent);
+  background-color: rgba(26, 26, 46, 0.8);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--cyberpunk-accent);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  background: transparent;
+  overflow: hidden;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-online {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--cyberpunk-dark-light);
+  border: 1px solid var(--cyberpunk-accent);
+  padding: 2px 8px;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--cyberpunk-accent);
+  white-space: nowrap;
+}
+
+.online-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 6px #00ff88;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.profile-identity {
+  flex: 1;
+}
+
+.profile-identity h1 {
+  font-size: 2.2rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.25rem;
+}
+
+.profile-handle {
+  color: var(--cyberpunk-accent-alt);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.profile-tagline {
+  color: var(--cyberpunk-text);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 2rem;
+  flex-shrink: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--cyberpunk-accent-tertiary);
+  padding: 0.75rem 1.25rem;
+  background: rgba(107, 0, 128, 0.1);
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--cyberpunk-accent);
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--cyberpunk-text);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+/* Body sections */
+.profile-body {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-section {
+  border: 2px solid var(--cyberpunk-accent-tertiary);
+  background-color: rgba(26, 26, 46, 0.8);
+  padding: 1.5rem;
+}
+
+.profile-section h2 {
+  color: var(--cyberpunk-accent);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--cyberpunk-accent-tertiary);
+}
+
+.profile-section p {
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: var(--cyberpunk-text);
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+}
+
+/* Schedule */
+.schedule-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.schedule-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(107, 0, 128, 0.3);
+}
+
+.schedule-list li:last-child {
+  border-bottom: none;
+}
+
+.day {
+  color: var(--cyberpunk-accent-alt);
+}
+
+.time {
+  color: var(--cyberpunk-text);
+  opacity: 0.7;
+}
+
+/* Socials */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.social-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.social-link.twitch {
+  border-color: #9146ff;
+  color: #9146ff;
+}
+
+.social-link.twitch:hover {
+  background: rgba(145, 70, 255, 0.15);
+  box-shadow: 0 0 12px rgba(145, 70, 255, 0.4);
+  color: #9146ff;
+}
+
+.social-link.discord {
+  border-color: #5865f2;
+  color: #5865f2;
+}
+
+.social-link.discord:hover {
+  background: rgba(88, 101, 242, 0.15);
+  box-shadow: 0 0 12px rgba(88, 101, 242, 0.4);
+  color: #5865f2;
+}
+
+.social-link.twitter {
+  border-color: var(--cyberpunk-accent);
+  color: var(--cyberpunk-accent);
+}
+
+.social-link.twitter:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+  color: var(--cyberpunk-accent);
+}
+
+@media (max-width: 900px) {
+  .profile-body {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .profile-section:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .profile-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .profile-body {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-section:first-child {
+    grid-column: auto;
+  }
+}

@@ -1,76 +1,79 @@
-# StreamRoom - Setup & Getting Started Guide
+# StreamRoom — Setup Guide
 
-## 📋 What's Included
+## Prerequisites
 
-Your StreamRoom project has been fully scaffolded with:
+- **Node.js** 18+ and npm
+- **Java 25** and Maven 3.9+
+- **PostgreSQL 15+** (or Docker)
 
-### Frontend (React 19 + Vite)
-- ✅ Modern React 19 setup with Vite bundler
-- ✅ Cyberpunk-themed UI with Tailwind CSS
-- ✅ React Router for page navigation
-- ✅ Axios API client
-- ✅ Twitch stream embed with chat
-- ✅ Responsive components
+---
 
-### Backend (Spring Boot 3.2 + Java 25)
-- ✅ RESTful API endpoints
-- ✅ Content Management System (CMS)
-- ✅ Game library management
-- ✅ User management
-- ✅ Stream session tracking
-- ✅ PostgreSQL database integration
+## Step 1 — Database
 
-### Database
-- ✅ PostgreSQL configuration
-- ✅ Docker Compose setup for easy local development
-- ✅ Automated schema creation with Hibernate
+**Option A: Docker (recommended)**
 
-## 🚀 Quick Start
-
-### Step 1: Setup Database
-
-**Option A: Using Docker (Recommended)**
 ```bash
-cd streamroom
 docker-compose up -d
 ```
 
-**Option B: Manual PostgreSQL Setup**
+This starts a PostgreSQL 15 container on port `5432` with database `streamroom`, user `streamroom_user`, password `streamroom_password`.
+
+**Option B: Manual PostgreSQL**
+
 ```bash
-# Create database
-createdb streamroom
-
-# Create user
-psql -c "CREATE USER streamroom_user WITH PASSWORD 'streamroom_password';"
-
-# Grant privileges
-psql -c "ALTER ROLE streamroom_user SET client_encoding TO 'utf8';"
-psql -c "ALTER ROLE streamroom_user SET default_transaction_isolation TO 'read committed';"
-psql -c "ALTER ROLE streamroom_user SET default_transaction_deferrable TO on;"
-psql -c "ALTER ROLE streamroom_user SET timezone TO 'UTC';"
-psql -c "GRANT ALL PRIVILEGES ON DATABASE streamroom TO streamroom_user;"
+psql -U postgres -c "CREATE DATABASE streamroom;"
+psql -U postgres -c "CREATE USER streamroom_user WITH PASSWORD 'streamroom_password';"
+psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE streamroom TO streamroom_user;"
 ```
 
-### Step 2: Setup Backend
+---
+
+## Step 2 — Backend
+
+### 2a. Configure secrets
+
+The backend uses Spring profiles. The `dev` profile reads from `application-dev.properties`, which is gitignored so your credentials are never committed.
+
+Create the file from the provided example:
+
+```bash
+cp backend/src/main/resources/application.properties.example \
+   backend/src/main/resources/application-dev.properties
+```
+
+Then open `application-dev.properties` and fill in your values:
+
+```properties
+# Database (defaults work if you used Docker in Step 1)
+spring.datasource.url=jdbc:postgresql://localhost:5432/streamroom
+spring.datasource.username=streamroom_user
+spring.datasource.password=streamroom_password
+
+# Twitch API — get these from https://dev.twitch.tv/console
+twitch.api.client-id=your_twitch_client_id_here
+twitch.api.access-token=your_twitch_access_token_here
+
+# JWT — change to a random string of at least 32 characters
+jwt.secret=replace_this_with_a_secure_random_secret
+
+# CORS — allow the Vite dev server
+cors.allowed-origins=http://localhost:3000,http://localhost:5173
+```
+
+### 2b. Build and run
 
 ```bash
 cd backend
-
-# Copy example configuration
-cp src/main/resources/application.properties.example src/main/resources/application.properties
-
-# Build
-mvn clean install
-
-# Run
+mvn clean install -DskipTests
 mvn spring-boot:run
 ```
 
-Backend will be available at: `http://localhost:8080/api`
+The API is available at `http://localhost:8080/api`.
+Swagger UI is available at `http://localhost:8080/api/swagger-ui.html`.
 
-### Step 3: Setup Frontend
+---
 
-In a new terminal:
+## Step 3 — Frontend
 
 ```bash
 cd frontend
@@ -78,202 +81,155 @@ cd frontend
 # Install dependencies
 npm install
 
-# Copy environment variables
+# Copy and configure environment
 cp .env.example .env
-# Edit .env and add your Twitch channel name and client ID
+```
 
-# Start development server
+Edit `.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+VITE_TWITCH_CHANNEL=your_channel_name
+VITE_TWITCH_CLIENT_ID=your_twitch_client_id
+```
+
+Start the dev server:
+
+```bash
 npm run dev
 ```
 
-Frontend will be available at: `http://localhost:5173`
+Frontend is available at `http://localhost:5173`.
 
-## ⚙️ Configuration
+---
 
-### Twitch Integration
-
-1. Go to https://dev.twitch.tv/console
-2. Create a new application
-3. Add your redirect URI: `http://localhost:3000`
-4. Get your Client ID
-5. Update `.env` in frontend and `application.properties` in backend
-
-### Environment Variables
-
-**Frontend (.env)**
-```env
-VITE_API_BASE_URL=http://localhost:8080/api
-VITE_TWITCH_CLIENT_ID=your_client_id_here
-VITE_TWITCH_CHANNEL=your_channel_name
-```
-
-**Backend (application.properties)**
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/streamroom
-spring.datasource.username=streamroom_user
-spring.datasource.password=streamroom_password
-twitch.api.client-id=your_client_id_here
-twitch.api.access-token=your_access_token_here
-```
-
-## 📁 Project Structure
+## Project Layout
 
 ```
 streamroom/
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── pages/           # Page components
-│   │   ├── styles/          # CSS files
-│   │   ├── utils/           # Helper functions
-│   │   ├── api/             # API client
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── api/
+│   │   │   ├── client.js              # Axios instance + error interceptor
+│   │   │   └── services/              # Per-domain API service modules
+│   │   │       ├── contentService.js
+│   │   │       ├── gameService.js
+│   │   │       └── userService.js
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   │   └── ErrorBoundary.jsx  # React error boundary for all routes
+│   │   │   └── ...
+│   │   ├── hooks/
+│   │   │   └── useApi.js              # Generic fetch hook (data/loading/error/refetch)
+│   │   ├── pages/                     # Home, Games, Content, Profile, NotFound
+│   │   └── styles/                    # Per-component CSS + globals
 │   ├── public/
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   └── index.html
+│   │   └── logo.png                   # PiggyPlaysPH mascot logo
+│   └── .env                           # Gitignored — local secrets only
 │
 ├── backend/
-│   ├── src/
-│   │   ├── main/java/com/streamroom/
-│   │   │   ├── controller/  # API endpoints
-│   │   │   ├── service/     # Business logic
-│   │   │   ├── repository/  # Data access
-│   │   │   ├── entity/      # JPA entities
-│   │   │   ├── dto/         # Data models
-│   │   │   ├── config/      # Configuration
-│   │   │   └── StreamroomApplication.java
-│   │   ├── test/
-│   │   └── resources/
-│   │       └── application.properties
-│   ├── pom.xml
-│   └── README.md
+│   └── src/main/java/com/streamroom/
+│       ├── config/
+│       │   ├── CorsConfig.java        # CORS — reads cors.allowed-origins property
+│       │   └── TwitchProperties.java  # Twitch credentials via @ConfigurationProperties
+│       ├── exception/
+│       │   ├── GlobalExceptionHandler.java     # @RestControllerAdvice
+│       │   ├── ResourceNotFoundException.java
+│       │   └── ErrorResponse.java              # Consistent error JSON shape
+│       ├── mapper/
+│       │   └── DtoMapper.java         # All entity → DTO conversions (SRP)
+│       ├── service/
+│       │   ├── IContentService.java   # Service interfaces (DIP)
+│       │   ├── IGameService.java
+│       │   ├── IUserService.java
+│       │   └── SlugGeneratorService.java
+│       └── ...
+│   └── src/main/resources/
+│       ├── application.properties          # Shared defaults; sets active profile to dev
+│       ├── application-dev.properties      # Dev secrets — GITIGNORED
+│       └── application-prod.properties     # Prod — all values from ${ENV_VAR}
 │
-├── docker-compose.yml       # Database setup
-└── README.md
+└── docker-compose.yml
 ```
-
-## 🎨 Cyberpunk Theme
-
-The theme includes:
-- **Dark Background**: `#0a0a0a`
-- **Dark Secondary**: `#1a1a2e`
-- **Cyan Accent**: `#00d4ff`
-- **Magenta Accent**: `#ff006e`
-- **Purple Accent**: `#b300ff`
-- **Font**: Orbitron (monospace)
-
-Customize colors in:
-- Frontend: `frontend/src/styles/globals.css`
-- Tailwind: `frontend/tailwind.config.js`
-
-## 🔌 API Endpoints
-
-### Content
-- `GET /api/content` - Get all published content
-- `GET /api/content/{id}` - Get specific content
-- `GET /api/content/slug/{slug}` - Get content by slug
-- `GET /api/content/featured` - Get featured content
-- `POST /api/content` - Create content
-- `PUT /api/content/{id}` - Update content
-- `DELETE /api/content/{id}` - Delete content
-
-### Games
-- `GET /api/games` - Get all games
-- `GET /api/games/{id}` - Get specific game
-- `GET /api/games/featured` - Get featured games
-- `POST /api/games` - Create game
-- `PUT /api/games/{id}` - Update game
-- `DELETE /api/games/{id}` - Delete game
-
-### Health
-- `GET /api/health` - Check API status
-
-## 📦 Build & Deployment
-
-### Frontend Build
-```bash
-cd frontend
-npm run build
-# Output in frontend/dist/
-```
-
-### Backend Build
-```bash
-cd backend
-mvn clean package
-# Output: backend/target/streamroom-backend-1.0.0.jar
-```
-
-## 🧪 Testing
-
-### Frontend
-```bash
-cd frontend
-npm run lint
-```
-
-### Backend
-```bash
-cd backend
-mvn test
-```
-
-## 🐛 Troubleshooting
-
-### Database Connection Issues
-- Ensure PostgreSQL is running (or Docker container)
-- Check credentials in `application.properties`
-- Verify database created: `psql -l`
-
-### Port Already in Use
-- Frontend: Change port in `vite.config.js` (default: 5173)
-- Backend: Change port in `application.properties` (default: 8080)
-
-### CORS Errors
-- Verify frontend URL in backend CORS config: `StreamroomApplication.java`
-- Check API URL in frontend `.env`
-
-## 🎯 Next Steps
-
-1. **Add Twitch Integration**: Update Twitch API credentials
-2. **Create Admin Dashboard**: Build admin management interface
-3. **User Authentication**: Implement JWT-based auth
-4. **Content Upload**: Add image/video upload functionality
-5. **Stream Analytics**: Track viewer stats and engagement
-6. **Comments System**: Add user interactions
-7. **Search & Filter**: Implement advanced search
-
-## 📚 Useful Resources
-
-- [React Documentation](https://react.dev)
-- [Spring Boot Docs](https://spring.io/projects/spring-boot)
-- [PostgreSQL Docs](https://www.postgresql.org/docs)
-- [Twitch API Docs](https://dev.twitch.tv/docs)
-- [Tailwind CSS](https://tailwindcss.com)
-
-## 💡 Tips
-
-- Use `npm run dev` for hot reload during development
-- Spring Boot includes automatic restart with `spring-boot-devtools`
-- Tailwind CSS purges unused styles in production builds
-- Database schema auto-updates via Hibernate
-
-## 📝 Notes
-
-- All sensitive credentials should be in `.env` files (NOT committed)
-- Use `.env.example` as template for other developers
-- PostgreSQL automatic schema updates in development (`ddl-auto=update`)
-- CORS is configured for localhost development
-
-## 🆘 Support
-
-- Check README files in each directory (frontend/, backend/)
-- Review Docker Compose config for database setup
-- Ensure all prerequisites are installed
 
 ---
 
-**Happy streaming! 🎮✨**
+## Twitch Setup
+
+1. Go to [https://dev.twitch.tv/console](https://dev.twitch.tv/console)
+2. Create a new application
+3. Set redirect URI to `http://localhost:3000`
+4. Copy the **Client ID** into `application-dev.properties` and `.env`
+5. Generate an **App Access Token** (Client Credentials flow) and put it in `application-dev.properties`
+6. Set `VITE_TWITCH_CHANNEL` in `.env` to your Twitch channel name
+
+---
+
+## Build for Production
+
+### Frontend
+
+```bash
+cd frontend
+npm run build
+# Output in frontend/dist/ — serve with any static host
+```
+
+### Backend
+
+```bash
+cd backend
+mvn clean package -DskipTests
+# Output: backend/target/streamroom-backend-1.0.0.jar
+```
+
+Run in production mode (all secrets via environment variables):
+
+```bash
+java -jar target/streamroom-backend-1.0.0.jar \
+  --spring.profiles.active=prod \
+  --DB_URL=jdbc:postgresql://... \
+  --DB_USERNAME=... \
+  --DB_PASSWORD=... \
+  --JWT_SECRET=... \
+  --TWITCH_CLIENT_ID=... \
+  --TWITCH_ACCESS_TOKEN=... \
+  --CORS_ALLOWED_ORIGINS=https://yourdomain.com
+```
+
+---
+
+## Customisation
+
+### Profile info
+
+Edit [frontend/src/pages/Profile.jsx](frontend/src/pages/Profile.jsx) — update the name, bio, schedule, and social links directly.
+
+### Theme colours
+
+CSS variables are defined in [frontend/src/styles/globals.css](frontend/src/styles/globals.css):
+
+```css
+--cyberpunk-dark:           #0a0a0a
+--cyberpunk-dark-light:     #1a1a2e
+--cyberpunk-accent:         #00FFFF   /* cyan */
+--cyberpunk-accent-alt:     #FF1493   /* magenta */
+--cyberpunk-accent-tertiary:#6B0080   /* purple */
+```
+
+### Logo
+
+Replace `frontend/public/logo.png` with your own image. The header and profile page both reference `/logo.png`.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `application-dev.properties not found` | Run the `cp` command in Step 2a |
+| Database connection refused | Confirm PostgreSQL or Docker is running on port 5432 |
+| CORS errors in browser | Check `cors.allowed-origins` in `application-dev.properties` matches your frontend URL |
+| Twitch player shows blank | Set `VITE_TWITCH_CHANNEL` in `.env` to a valid live channel |
+| IDE shows "cannot resolve" errors | Run `mvn compile` or reload Maven project — Lombok annotations require annotation processing |
+| Port already in use | Frontend: change port in `vite.config.js`; Backend: set `server.port` in properties |

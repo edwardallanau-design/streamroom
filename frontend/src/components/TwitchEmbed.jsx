@@ -9,8 +9,6 @@ function TwitchEmbed() {
       <div className="twitch-container">
         <iframe
           src={`https://player.twitch.tv/?channel=${twitchChannel}&parent=localhost`}
-          height="480"
-          width="100%"
           allow="autoplay"
           title="Twitch Stream"
         ></iframe>
@@ -18,8 +16,6 @@ function TwitchEmbed() {
       <div className="twitch-chat">
         <iframe
           src={`https://www.twitch.tv/embed/${twitchChannel}/chat?parent=localhost`}
-          height="480"
-          width="100%"
           title="Twitch Chat"
         ></iframe>
       </div>

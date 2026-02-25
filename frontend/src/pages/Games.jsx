@@ -1,27 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { getGames } from '../api/client'
+import { gameService } from '../api/services/gameService'
+import { useApi } from '../hooks/useApi'
 import GameCard from '../components/GameCard'
 import '../styles/page.css'
 
 function Games() {
-  const [games, setGames] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const response = await getGames()
-        setGames(response.data)
-      } catch (err) {
-        setError('Failed to load games')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchGames()
-  }, [])
+  const { data: games, loading, error, refetch } = useApi(() => gameService.getAll())
 
   return (
     <div className="page-container">
@@ -30,13 +13,18 @@ function Games() {
         <p>All games featured on our channel</p>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={refetch} style={{ marginLeft: '1rem' }}>RETRY</button>
+        </div>
+      )}
 
       {loading ? (
         <div className="loading">LOADING GAMES...</div>
       ) : (
         <div className="games-grid-page">
-          {games.map((game) => (
+          {(games ?? []).map((game) => (
             <GameCard key={game.id} game={game} />
           ))}
         </div>

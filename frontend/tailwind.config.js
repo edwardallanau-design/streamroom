@@ -10,9 +10,10 @@ export default {
         cyberpunk: {
           dark: '#0a0a0a',
           'dark-light': '#1a1a2e',
-          accent: '#00d4ff',
-          'accent-alt': '#ff006e',
-          'accent-tertiary': '#b300ff',
+          accent: '#00FFFF',
+          'accent-alt': '#FF1493',
+          'accent-tertiary': '#6B0080',
+          'accent-yellow': '#FFB800',
           text: '#e0e0e0',
           'text-light': '#ffffff'
         }
@@ -26,8 +27,8 @@ export default {
       },
       keyframes: {
         glow: {
-          '0%, 100%': { textShadow: '0 0 10px #00d4ff, 0 0 20px #00d4ff' },
-          '50%': { textShadow: '0 0 20px #00d4ff, 0 0 30px #00d4ff, 0 0 40px #b300ff' },
+          '0%, 100%': { textShadow: '0 0 10px #00FFFF, 0 0 20px #00FFFF' },
+          '50%': { textShadow: '0 0 20px #FF1493, 0 0 30px #FF1493, 0 0 40px #6B0080' },
         }
       }
     }
