@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByTwitchUsername(String twitchUsername);
+
+    Optional<User> findFirstByIsAdminTrue();
+
+    boolean existsByIsAdminTrue();
 }

@@ -11,11 +11,13 @@ import java.util.Optional;
 public interface ContentRepository extends JpaRepository<Content, Long> {
     Optional<Content> findBySlug(String slug);
 
-    List<Content> findByIsPublishedTrue();
+    List<Content> findByIsPublishedTrueOrderByCreatedAtDesc();
 
     List<Content> findByIsFeaturedTrueAndIsPublishedTrue();
 
     List<Content> findByAuthorIdOrderByCreatedAtDesc(Long authorId);
 
     List<Content> findByCategoryIdAndIsPublishedTrue(Long categoryId);
+
+    List<Content> findAllByOrderByCreatedAtDesc();
 }

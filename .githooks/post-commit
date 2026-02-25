@@ -1,0 +1,2 @@
+#!/bin/sh
+# Docker rebuild moved to pre-push hook

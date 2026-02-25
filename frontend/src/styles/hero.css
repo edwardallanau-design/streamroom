@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  height: 100%;
+  height: calc(100vh - 53px);
   overflow: hidden;
 }
 
@@ -23,12 +23,12 @@
 }
 
 .hero-content {
+  align-self: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
+  height: 95%;
+  width: 100%;
+  padding: 1rem;
 }
 
 .twitch-section {
@@ -42,7 +42,7 @@
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 200px) {
   .twitch-section {
     padding: 0.5rem;
   }

@@ -21,4 +21,8 @@ public interface IContentService {
     List<ContentDTO> getContentByAuthor(Long authorId);
 
     void deleteContent(Long id);
+
+    List<ContentDTO> getAllContent();
+
+    ContentDTO createContentAdmin(CreateContentRequest request);
 }

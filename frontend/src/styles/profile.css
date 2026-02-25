@@ -191,8 +191,15 @@
   letter-spacing: 2px;
   text-transform: uppercase;
   text-align: center;
-  border: 1px solid;
+  border: 1px solid var(--cyberpunk-accent);
+  color: var(--cyberpunk-accent);
   transition: all 0.2s ease;
+}
+
+.social-link:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+  color: var(--cyberpunk-accent);
 }
 
 .social-link.twitch {
@@ -226,6 +233,219 @@
   background: rgba(0, 255, 255, 0.1);
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
   color: var(--cyberpunk-accent);
+}
+
+/* Admin actions in card */
+.profile-admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.profile-edit-btn,
+.profile-logout-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  font-family: inherit;
+}
+
+.profile-edit-btn {
+  background: transparent;
+  border: 1px solid var(--cyberpunk-accent);
+  color: var(--cyberpunk-accent);
+}
+
+.profile-edit-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.profile-logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.profile-logout-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Edit panel */
+.profile-edit-panel {
+  border: 2px solid var(--cyberpunk-accent);
+  background: rgba(26, 26, 46, 0.95);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.profile-edit-title {
+  color: var(--cyberpunk-accent);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+}
+
+.profile-edit-error {
+  color: #ff4466;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.profile-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.profile-edit-section--full {
+  grid-column: 1 / -1;
+}
+
+.profile-edit-section h3 {
+  color: var(--cyberpunk-accent-alt);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 0.25rem;
+}
+
+.profile-edit-section label {
+  font-size: 0.75rem;
+  color: var(--cyberpunk-text);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+}
+
+.profile-edit-section input,
+.profile-edit-section textarea {
+  padding: 8px 10px;
+  background: var(--cyberpunk-dark-light);
+  color: var(--cyberpunk-text-light);
+  border: 1px solid var(--cyberpunk-accent);
+  border-radius: 2px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.profile-edit-section input:focus,
+.profile-edit-section textarea:focus {
+  outline: none;
+  border-color: var(--cyberpunk-accent-alt);
+  box-shadow: 0 0 6px rgba(255, 20, 147, 0.2);
+}
+
+/* Schedule edit */
+.schedule-edit-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.schedule-edit-row input {
+  flex: 1;
+}
+
+.schedule-remove-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 68, 102, 0.5);
+  color: #ff4466;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.schedule-remove-btn:hover {
+  background: rgba(255, 68, 102, 0.15);
+}
+
+.schedule-add-btn {
+  background: transparent;
+  border: 1px dashed var(--cyberpunk-accent);
+  color: var(--cyberpunk-accent);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 2px;
+  margin-top: 0.25rem;
+  font-family: inherit;
+}
+
+.schedule-add-btn:hover {
+  background: rgba(0, 255, 255, 0.08);
+}
+
+/* Save/cancel */
+.profile-edit-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.profile-save-btn {
+  padding: 0.6rem 2rem;
+  background: var(--cyberpunk-accent);
+  color: var(--cyberpunk-dark);
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.profile-save-btn:hover:not(:disabled) {
+  box-shadow: 0 0 16px rgba(0, 255, 255, 0.4);
+}
+
+.profile-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.profile-cancel-btn {
+  padding: 0.6rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.profile-cancel-btn:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 900px) {

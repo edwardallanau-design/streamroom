@@ -29,7 +29,6 @@ function Header() {
           <Link to="/games" className="nav-link">GAMES</Link>
           <Link to="/content" className="nav-link">CONTENT</Link>
           <Link to="/profile" className="nav-link">PROFILE</Link>
-          <Link to="/" className="nav-link cta">ADMIN</Link>
         </nav>
       </div>
     </header>

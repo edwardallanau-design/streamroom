@@ -9,7 +9,10 @@
       "Bash(curl -s \"https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/3.0.1/springdoc-openapi-starter-webmvc-ui-3.0.1.pom\")",
       "Bash(jar tf ~/.m2/repository/tools/jackson/core/jackson-databind/3.0.4/jackson-databind-3.0.4.jar)",
       "Bash(jar tf ~/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-ui/3.0.1/springdoc-openapi-starter-webmvc-ui-3.0.1.jar)",
-      "Bash(mvn clean install -DskipTests -q)"
+      "Bash(mvn clean install -DskipTests -q)",
+      "Bash(git -C d:/Projects/streamroom config core.hooksPath .githooks)",
+      "Bash(git add .githooks/pre-push)",
+      "Bash(git update-index --chmod=+x .githooks/pre-push)"
     ]
   }
 }

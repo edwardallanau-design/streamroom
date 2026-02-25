@@ -102,7 +102,7 @@ public class ContentService implements IContentService {
 
     @Override
     public List<ContentDTO> getAllPublishedContent() {
-        return contentRepository.findByIsPublishedTrue()
+        return contentRepository.findByIsPublishedTrueOrderByCreatedAtDesc()
                 .stream().map(mapper::toContentDTO).toList();
     }
 
@@ -126,5 +126,38 @@ public class ContentService implements IContentService {
             throw new ResourceNotFoundException("Content", id);
         }
         contentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ContentDTO> getAllContent() {
+        return contentRepository.findAllByOrderByCreatedAtDesc()
+                .stream().map(mapper::toContentDTO).toList();
+    }
+
+    @Override
+    @Transactional
+    public ContentDTO createContentAdmin(CreateContentRequest request) {
+        log.info("Creating content '{}' as admin", request.title());
+
+        User author = userRepository.findFirstByIsAdminTrue()
+                .orElseThrow(() -> new ResourceNotFoundException("User", "isAdmin=true"));
+
+        var content = new Content();
+        content.setTitle(request.title());
+        content.setDescription(request.description());
+        content.setContent(request.content());
+        content.setSlug(slugGenerator.generate(request.title()));
+        content.setFeaturedImage(request.featuredImage());
+        content.setAuthor(author);
+        if (request.isPublished() != null) content.setIsPublished(request.isPublished());
+        if (request.isFeatured() != null) content.setIsFeatured(request.isFeatured());
+
+        if (request.categoryId() != null) {
+            Category category = categoryRepository.findById(request.categoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", request.categoryId()));
+            content.setCategory(category);
+        }
+
+        return mapper.toContentDTO(contentRepository.save(content));
     }
 }

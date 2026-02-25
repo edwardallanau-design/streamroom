@@ -48,8 +48,8 @@ public class Content {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        isPublished = false;
-        isFeatured = false;
+        if (isPublished == null) isPublished = false;
+        if (isFeatured == null) isFeatured = false;
     }
 
     @PreUpdate
