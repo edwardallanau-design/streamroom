@@ -18,6 +18,7 @@ docker-compose up --build
 The application will be available at:
 - **Frontend**: http://localhost
 - **Backend API**: http://localhost/api
+- **Swagger UI**: http://localhost/swagger-ui/index.html
 - **Database**: localhost:5432
 
 ### Stop All Services
@@ -61,9 +62,16 @@ Services communicate via Docker network `streamroom-network`:
 - Both frontend and backend are on the same network
 
 ### Health Checks
-- PostgreSQL has health checks enabled
-- Backend depends on healthy PostgreSQL before starting
-- Frontend depends on Backend service
+- PostgreSQL health check: `pg_isready -U postgres` (every 10 s, 5 retries)
+- Backend health check: `GET /health` via `wget` (every 15 s, 8 retries, 30 s start period) — backend waits for healthy PostgreSQL before starting
+- Frontend (Nginx) waits for a **healthy** backend before starting — prevents the `host not found in upstream` error on fast machines
+
+### Nginx Routing
+Nginx uses Docker's internal DNS resolver (`127.0.0.11`) with per-request DNS resolution so backend lookups don't fail at container startup. Routes:
+- `/api/*` → `backend:8080/` (strips `/api` prefix)
+- `/swagger-ui/*` → `backend:8080/swagger-ui/`
+- `/v3/*` → `backend:8080/v3/` (OpenAPI spec fetched by Swagger UI)
+- All other paths → `index.html` (React SPA fallback)
 
 ## Development
 

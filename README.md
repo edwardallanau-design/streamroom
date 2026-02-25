@@ -108,8 +108,10 @@ streamroom/
 - **Java 25 / Spring Boot 4.0.3**
 - **Spring Data JPA** + **PostgreSQL 15**
 - **Spring Boot Validation** — Jakarta Bean Validation on all write DTOs
-- **Springdoc OpenAPI** — Swagger UI at `/api/swagger-ui.html` (dev only)
-- **Lombok**
+- **Springdoc OpenAPI 3** — Swagger UI at `/swagger-ui/index.html`
+- **Java Records** — DTOs are immutable Java 25 records (no Lombok)
+- **Jackson 3** (`tools.jackson`) — null fields excluded globally via `spring.jackson.default-property-inclusion=non_null`
+- **Virtual threads** — enabled via `spring.threads.virtual.enabled=true` (Project Loom / Java 25)
 - **Spring WebFlux** — WebClient for Twitch API
 - **JJWT** — JWT library ready for auth implementation
 
@@ -147,7 +149,9 @@ streamroom/
 | PUT | `/api/users/{id}` | Update user |
 | DELETE | `/api/users/{id}` | Delete user |
 
-Interactive docs at `http://localhost:8080/api/swagger-ui.html` when running the `dev` profile.
+Interactive docs:
+- **Via Docker (recommended):** `http://localhost/swagger-ui/index.html`
+- **Direct backend (local dev):** `http://localhost:8080/swagger-ui/index.html`
 
 ---
 

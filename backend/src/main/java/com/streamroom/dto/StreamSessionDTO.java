@@ -15,4 +15,5 @@ public record StreamSessionDTO(
         LocalDateTime createdAt,
         LocalDateTime startedAt,
         LocalDateTime endedAt
-) {}
+) {
+}

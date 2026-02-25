@@ -1,10 +1,8 @@
 package com.streamroom.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 
     private final int status;
@@ -25,9 +23,23 @@ public class ErrorResponse {
         this.details = details;
     }
 
-    public int getStatus() { return status; }
-    public String getError() { return error; }
-    public String getMessage() { return message; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public List<String> getDetails() { return details; }
+    public int getStatus() {
+        return status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public List<String> getDetails() {
+        return details;
+    }
 }

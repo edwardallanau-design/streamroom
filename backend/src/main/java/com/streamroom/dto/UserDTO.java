@@ -23,4 +23,5 @@ public record UserDTO(
 
         @Size(max = 50, message = "Twitch username must not exceed 50 characters")
         String twitchUsername
-) {}
+) {
+}

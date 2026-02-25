@@ -19,4 +19,5 @@ public record CreateContentRequest(
         Long categoryId,
         Boolean isPublished,
         Boolean isFeatured
-) {}
+) {
+}

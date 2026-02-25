@@ -1,6 +1,6 @@
 # StreamRoom Backend
 
-A Spring Boot 3.2 backend for a Twitch streaming website with content management system.
+A Spring Boot 4.0.3 / Java 25 backend for a Twitch streaming website with content management system.
 
 ## Features
 
@@ -55,11 +55,13 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The API will be available at `http://localhost:8080/api`
+The API will be available at `http://localhost:8080/api`.
+Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
 ## API Endpoints
 
 ### Content
+
 - `GET /api/content` - Get all published content
 - `GET /api/content/{id}` - Get content by ID
 - `GET /api/content/slug/{slug}` - Get content by slug
@@ -69,6 +71,7 @@ The API will be available at `http://localhost:8080/api`
 - `DELETE /api/content/{id}` - Delete content
 
 ### Games
+
 - `GET /api/games` - Get all games
 - `GET /api/games/{id}` - Get game by ID
 - `GET /api/games/featured` - Get featured games
@@ -77,6 +80,7 @@ The API will be available at `http://localhost:8080/api`
 - `DELETE /api/games/{id}` - Delete game
 
 ### Health
+
 - `GET /api/health` - Check API health
 
 ## Project Structure
@@ -85,12 +89,14 @@ The API will be available at `http://localhost:8080/api`
 src/
 ├── main/
 │   ├── java/com/streamroom/
-│   │   ├── controller/    # API endpoints
-│   │   ├── service/       # Business logic
-│   │   ├── repository/    # Data access
-│   │   ├── entity/        # JPA entities
-│   │   ├── dto/           # Data transfer objects
-│   │   ├── config/        # Configuration
+│   │   ├── controller/    # REST controllers (constructor-injected, no Lombok)
+│   │   ├── service/       # Business logic + service interfaces (DIP)
+│   │   ├── repository/    # Spring Data JPA repositories
+│   │   ├── entity/        # JPA entities (explicit getters/setters, no Lombok)
+│   │   ├── dto/           # Java records (immutable DTOs with Jakarta validation)
+│   │   ├── mapper/        # DtoMapper — central entity→DTO conversion
+│   │   ├── exception/     # GlobalExceptionHandler + ErrorResponse
+│   │   ├── config/        # CorsConfig, TwitchProperties, WebClientConfig
 │   │   └── StreamroomApplication.java
 │   └── resources/
 │       └── application.properties
@@ -99,12 +105,15 @@ src/
 
 ## Technologies
 
-- Spring Boot 3.2
-- Spring Data JPA
-- PostgreSQL
-- Lombok
-- JWT (io.jsonwebtoken)
-- Spring WebFlux
+- Spring Boot 4.0.3 / Java 25
+- Spring Data JPA + PostgreSQL 15
+- Spring WebFlux (WebClient for Twitch API)
+- Jakarta Bean Validation
+- Springdoc OpenAPI 3 (Swagger UI)
+- JWT (io.jsonwebtoken 0.12.3)
+- Java Records for all DTOs (no Lombok)
+- Jackson 3 (`tools.jackson`) — null exclusion via global property
+- Virtual threads (Project Loom, enabled via `spring.threads.virtual.enabled=true`)
 
 ## License
 

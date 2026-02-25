@@ -104,7 +104,7 @@ mvn spring-boot:run
 ```
 
 The API is available at `http://localhost:8080/api`.
-Swagger UI is available at `http://localhost:8080/api/swagger-ui.html`.
+Swagger UI is available at `http://localhost:8080/swagger-ui/index.html`.
 
 **Backend Version:** Spring Boot 4.0.3 with Java 25
 
@@ -298,5 +298,7 @@ Replace `frontend/public/logo.png` with your own image. The header and profile p
 | Database connection refused | Confirm PostgreSQL or Docker is running on port 5432 |
 | CORS errors in browser | Check `cors.allowed-origins` in `application-dev.properties` matches your frontend URL |
 | Twitch player shows blank | Set `VITE_TWITCH_CHANNEL` in `.env` to a valid live channel |
-| IDE shows "cannot resolve" errors | Run `mvn compile` or reload Maven project — Lombok annotations require annotation processing |
+| IDE shows "cannot resolve" errors | Run `mvn compile` or reload Maven project |
 | Port already in use | Frontend: change port in `vite.config.js`; Backend: set `server.port` in properties |
+| Swagger returns 500 via Docker | Ensure nginx is running and Swagger is accessed via `http://localhost/swagger-ui/index.html`, not `/api/swagger-ui.html` |
+| nginx "host not found in upstream" | Backend container may still be starting — nginx uses Docker's internal DNS resolver and waits for the backend health check |

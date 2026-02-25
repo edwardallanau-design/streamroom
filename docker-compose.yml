@@ -38,6 +38,13 @@ services:
         condition: service_healthy
     networks:
       - streamroom-network
+    healthcheck:
+      # Alpine-based image uses wget; curl is not pre-installed
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
 
   frontend:
     build:
@@ -47,7 +54,8 @@ services:
     ports:
       - '80:80'
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - streamroom-network
 

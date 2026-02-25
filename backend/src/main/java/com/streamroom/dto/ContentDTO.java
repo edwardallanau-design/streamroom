@@ -16,4 +16,5 @@ public record ContentDTO(
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime publishedAt
-) {}
+) {
+}

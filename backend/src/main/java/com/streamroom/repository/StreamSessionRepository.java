@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface StreamSessionRepository extends JpaRepository<StreamSession, Long> {
     List<StreamSession> findByUserIdOrderByCreatedAtDesc(Long userId);
+
     List<StreamSession> findByIsLiveTrue();
+
     List<StreamSession> findByIsLiveFalseOrderByEndedAtDesc(Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.streamroom.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,37 +44,95 @@ public class StreamSession {
         isLive = false;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public User getUser() {
+        return user;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Game getGame() { return game; }
-    public void setGame(Game game) { this.game = game; }
+    public String getTitle() {
+        return title;
+    }
 
-    public Boolean getIsLive() { return isLive; }
-    public void setIsLive(Boolean isLive) { this.isLive = isLive; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getTwitchStreamUrl() { return twitchStreamUrl; }
-    public void setTwitchStreamUrl(String twitchStreamUrl) { this.twitchStreamUrl = twitchStreamUrl; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getThumbnail() { return thumbnail; }
-    public void setThumbnail(String thumbnail) { this.thumbnail = thumbnail; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Integer getViewerCount() { return viewerCount; }
-    public void setViewerCount(Integer viewerCount) { this.viewerCount = viewerCount; }
+    public Game getGame() {
+        return game;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getStartedAt() { return startedAt; }
-    public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
-    public LocalDateTime getEndedAt() { return endedAt; }
-    public void setEndedAt(LocalDateTime endedAt) { this.endedAt = endedAt; }
+    public Boolean getIsLive() {
+        return isLive;
+    }
+
+    public void setIsLive(Boolean isLive) {
+        this.isLive = isLive;
+    }
+
+    public String getTwitchStreamUrl() {
+        return twitchStreamUrl;
+    }
+
+    public void setTwitchStreamUrl(String twitchStreamUrl) {
+        this.twitchStreamUrl = twitchStreamUrl;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public Integer getViewerCount() {
+        return viewerCount;
+    }
+
+    public void setViewerCount(Integer viewerCount) {
+        this.viewerCount = viewerCount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(LocalDateTime startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public LocalDateTime getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(LocalDateTime endedAt) {
+        this.endedAt = endedAt;
+    }
 }

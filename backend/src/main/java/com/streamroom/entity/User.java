@@ -1,6 +1,7 @@
 package com.streamroom.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,36 +44,91 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getDisplayName() { return displayName; }
-    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public String getBio() { return bio; }
-    public void setBio(String bio) { this.bio = bio; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getProfileImage() { return profileImage; }
-    public void setProfileImage(String profileImage) { this.profileImage = profileImage; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getBannerImage() { return bannerImage; }
-    public void setBannerImage(String bannerImage) { this.bannerImage = bannerImage; }
+    public String getDisplayName() {
+        return displayName;
+    }
 
-    public String getTwitchUsername() { return twitchUsername; }
-    public void setTwitchUsername(String twitchUsername) { this.twitchUsername = twitchUsername; }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-    public String getTwitchUserId() { return twitchUserId; }
-    public void setTwitchUserId(String twitchUserId) { this.twitchUserId = twitchUserId; }
+    public String getBio() {
+        return bio;
+    }
 
-    public Boolean getIsAdmin() { return isAdmin; }
-    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getBannerImage() {
+        return bannerImage;
+    }
+
+    public void setBannerImage(String bannerImage) {
+        this.bannerImage = bannerImage;
+    }
+
+    public String getTwitchUsername() {
+        return twitchUsername;
+    }
+
+    public void setTwitchUsername(String twitchUsername) {
+        this.twitchUsername = twitchUsername;
+    }
+
+    public String getTwitchUserId() {
+        return twitchUserId;
+    }
+
+    public void setTwitchUserId(String twitchUserId) {
+        this.twitchUserId = twitchUserId;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
