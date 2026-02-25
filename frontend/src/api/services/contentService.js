@@ -8,4 +8,9 @@ export const contentService = {
   create: (data, userId) => api.post('/content', data, { headers: { 'X-User-Id': userId } }),
   update: (id, data) => api.put(`/content/${id}`, data),
   remove: (id) => api.delete(`/content/${id}`),
+  getAllAdmin: () => api.get('/admin/content'),
+  getByIdAdmin: (id) => api.get(`/content/${id}`),
+  createAdmin: (data) => api.post('/admin/content', data),
+  updateAdmin: (id, data) => api.put(`/admin/content/${id}`, data),
+  removeAdmin: (id) => api.delete(`/admin/content/${id}`),
 }

@@ -1,4 +1,8 @@
 .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background-color: var(--cyberpunk-dark-light);
   border-top: 1px solid var(--cyberpunk-accent-tertiary);
   padding: 0.6rem 2rem;
@@ -6,4 +10,5 @@
   font-size: 0.75rem;
   color: var(--cyberpunk-accent-tertiary);
   letter-spacing: 1px;
+  z-index: 100;
 }

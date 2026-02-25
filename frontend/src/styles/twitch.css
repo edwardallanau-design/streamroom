@@ -6,12 +6,16 @@
 }
 
 .twitch-container {
+  align-self: center;
+  height: 95%;
   flex: 2;
   min-width: 0;
 }
 
 .twitch-chat {
+  align-self: center;
   width: 350px;
+  height: 95%;
   z-index: 9999;
 }
 
