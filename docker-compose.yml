@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME:-streamroom_user}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-streamroom_password}
     ports:
-      - '5432:5432'
+      - '127.0.0.1:5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
@@ -37,7 +37,7 @@ services:
       TWITCH_ACCESS_TOKEN: ${TWITCH_ACCESS_TOKEN}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
-      - '8080:8080'
+      - '127.0.0.1:8080:8080'
     depends_on:
       postgres:
         condition: service_healthy
@@ -58,6 +58,7 @@ services:
       args:
         VITE_TWITCH_CHANNEL: ${VITE_TWITCH_CHANNEL:-piggyplaysph}
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+        VITE_TWITCH_CLIENT_ID: ${VITE_TWITCH_CLIENT_ID}
     container_name: streamroom-frontend
     ports:
       - '80:80'
@@ -68,6 +69,7 @@ services:
       - streamroom-network
 
   frontend-dev:
+    profiles: ["dev"]
     build:
       context: ./frontend
       dockerfile: Dockerfile
