@@ -142,7 +142,7 @@ function Profile() {
           <p className="profile-handle">@{profile.twitchUsername || 'streamroom'}</p>
           {profile.tagline && <p className="profile-tagline">{profile.tagline}</p>}
         </div>
-
+{/* 
         <div className="profile-stats">
           <div className="stat">
             <span className="stat-value">{formatStat(profile.followerCount)}</span>
@@ -156,7 +156,7 @@ function Profile() {
             <span className="stat-value">{formatStat(profile.hoursStreamed)}</span>
             <span className="stat-label">Hours</span>
           </div>
-        </div>
+        </div> */}
 
         {isAdmin && !editing && (
           <div className="profile-admin-actions">
