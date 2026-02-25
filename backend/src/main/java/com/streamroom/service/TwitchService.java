@@ -1,8 +1,8 @@
 package com.streamroom.service;
 
 import com.streamroom.config.TwitchProperties;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -10,12 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class TwitchService {
+
+    private static final Logger log = LoggerFactory.getLogger(TwitchService.class);
 
     private final TwitchProperties twitchProperties;
     private final WebClient webClient;
+
+    public TwitchService(TwitchProperties twitchProperties, WebClient webClient) {
+        this.twitchProperties = twitchProperties;
+        this.webClient = webClient;
+    }
 
     public Map<String, Object> getStreamInfo(String channelName) {
         try {

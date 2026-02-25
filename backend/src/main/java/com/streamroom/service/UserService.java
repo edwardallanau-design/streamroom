@@ -5,37 +5,41 @@ import com.streamroom.entity.User;
 import com.streamroom.exception.ResourceNotFoundException;
 import com.streamroom.mapper.DtoMapper;
 import com.streamroom.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class UserService implements IUserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
     private final DtoMapper mapper;
 
+    public UserService(UserRepository userRepository, DtoMapper mapper) {
+        this.userRepository = userRepository;
+        this.mapper = mapper;
+    }
+
     @Override
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
-        log.info("Creating user '{}'", userDTO.getUsername());
+        log.info("Creating user '{}'", userDTO.username());
 
-        User user = User.builder()
-                .username(userDTO.getUsername())
-                .email(userDTO.getUsername() + "@streamroom.local")
-                .displayName(userDTO.getDisplayName() != null ? userDTO.getDisplayName() : userDTO.getUsername())
-                .bio(userDTO.getBio())
-                .profileImage(userDTO.getProfileImage())
-                .bannerImage(userDTO.getBannerImage())
-                .twitchUsername(userDTO.getTwitchUsername())
-                .isAdmin(false)
-                .build();
+        var user = new User();
+        user.setUsername(userDTO.username());
+        user.setEmail(userDTO.username() + "@streamroom.local");
+        user.setDisplayName(userDTO.displayName() != null ? userDTO.displayName() : userDTO.username());
+        user.setBio(userDTO.bio());
+        user.setProfileImage(userDTO.profileImage());
+        user.setBannerImage(userDTO.bannerImage());
+        user.setTwitchUsername(userDTO.twitchUsername());
+        user.setIsAdmin(false);
 
         return mapper.toUserDTO(userRepository.save(user));
     }
@@ -66,11 +70,11 @@ public class UserService implements IUserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
 
-        if (userDTO.getDisplayName() != null) user.setDisplayName(userDTO.getDisplayName());
-        if (userDTO.getBio() != null) user.setBio(userDTO.getBio());
-        if (userDTO.getProfileImage() != null) user.setProfileImage(userDTO.getProfileImage());
-        if (userDTO.getBannerImage() != null) user.setBannerImage(userDTO.getBannerImage());
-        if (userDTO.getTwitchUsername() != null) user.setTwitchUsername(userDTO.getTwitchUsername());
+        if (userDTO.displayName() != null) user.setDisplayName(userDTO.displayName());
+        if (userDTO.bio() != null) user.setBio(userDTO.bio());
+        if (userDTO.profileImage() != null) user.setProfileImage(userDTO.profileImage());
+        if (userDTO.bannerImage() != null) user.setBannerImage(userDTO.bannerImage());
+        if (userDTO.twitchUsername() != null) user.setTwitchUsername(userDTO.twitchUsername());
 
         return mapper.toUserDTO(userRepository.save(user));
     }

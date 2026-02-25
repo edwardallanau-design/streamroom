@@ -94,6 +94,7 @@ application-local.properties
 application-dev.properties
 application-prod.properties
 application.properties.local
+.env.example.local
 
 # OS Files
 .DS_Store
@@ -141,6 +142,16 @@ jacoco.exec
 .coverage
 coverage.xml
 jacoco*.exec
+.jacoco/
+
+# Docker
+.docker/
+Dockerfile.local
+.jacoco/
+
+# Docker
+.docker/
+Dockerfile.local
 
 # Misc
 .byebug_history

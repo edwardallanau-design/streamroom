@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean install -DskipTests)",
+      "WebFetch(domain:repo.maven.apache.org)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

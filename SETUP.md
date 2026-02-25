@@ -1,19 +1,50 @@
 # StreamRoom — Setup Guide
 
-## Prerequisites
+## Quick Start (Docker - Recommended)
 
-- **Node.js** 18+ and npm
-- **Java 25** and Maven 3.9+
-- **PostgreSQL 15+** (or Docker)
+The entire application stack is containerized and ready to run:
+
+```bash
+# Build and start all services (frontend, backend, database)
+docker-compose up --build
+
+# Application is available at:
+# Frontend: http://localhost
+# Backend API: http://localhost/api
+# Database: localhost:5432
+```
+
+That's it! All three services will start automatically with proper networking and health checks.
+
+To stop:
+
+```bash
+docker-compose down
+```
+
+For complete Docker deployment information, see [DOCKER.md](DOCKER.md).
 
 ---
 
-## Step 1 — Database
+## Prerequisites
 
-**Option A: Docker (recommended)**
+- **Docker & Docker Compose** (recommended)
+- **Node.js** 18+ and npm (for local frontend development)
+- **Java 25** and Maven 3.9+ (for local backend development)
+- **PostgreSQL 15+** (only if not using Docker)
+
+---
+
+## Step 1 — Database (Local Development Only)
+
+If you're running the full Docker stack with `docker-compose up`, **skip this step** — the database starts automatically.
+
+For local development without Docker:
+
+**Option A: Docker Container**
 
 ```bash
-docker-compose up -d
+docker-compose up postgres
 ```
 
 This starts a PostgreSQL 15 container on port `5432` with database `streamroom`, user `streamroom_user`, password `streamroom_password`.
@@ -28,7 +59,11 @@ psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE streamroom TO streamroom_u
 
 ---
 
-## Step 2 — Backend
+## Step 2 — Backend (Local Development Only)
+
+If you're running the full Docker stack with `docker-compose up`, **skip this step** — the backend starts automatically and is available at `http://localhost/api`.
+
+For local development:
 
 ### 2a. Configure secrets
 
@@ -44,7 +79,7 @@ cp backend/src/main/resources/application.properties.example \
 Then open `application-dev.properties` and fill in your values:
 
 ```properties
-# Database (defaults work if you used Docker in Step 1)
+# Database (defaults work if you started PostgreSQL in Step 1)
 spring.datasource.url=jdbc:postgresql://localhost:5432/streamroom
 spring.datasource.username=streamroom_user
 spring.datasource.password=streamroom_password
@@ -71,9 +106,15 @@ mvn spring-boot:run
 The API is available at `http://localhost:8080/api`.
 Swagger UI is available at `http://localhost:8080/api/swagger-ui.html`.
 
+**Backend Version:** Spring Boot 4.0.3 with Java 25
+
 ---
 
-## Step 3 — Frontend
+## Step 3 — Frontend (Local Development Only)
+
+If you're running the full Docker stack with `docker-compose up`, **skip this step** — the frontend serves at `http://localhost` automatically.
+
+For local development:
 
 ```bash
 cd frontend
@@ -167,15 +208,41 @@ streamroom/
 
 ## Build for Production
 
-### Frontend
+### Docker Deployment (Recommended)
+
+The entire application is containerized and ready for production:
+
+```bash
+# Build all Docker images
+docker-compose build
+
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+Services automatically start in the correct order with health checks:
+- PostgreSQL 15 database
+- Spring Boot 4.0.3 backend (depends on database)
+- React 19 frontend with Nginx (depends on backend)
+
+For detailed Docker configuration, environment variables, and production best practices, see [DOCKER.md](DOCKER.md).
+
+### Traditional Deployment
+
+If not using Docker:
+
+**Frontend**
 
 ```bash
 cd frontend
 npm run build
-# Output in frontend/dist/ — serve with any static host
+# Output in frontend/dist/ — serve with any static host (Nginx, Apache, etc.)
 ```
 
-### Backend
+**Backend**
 
 ```bash
 cd backend
@@ -188,13 +255,13 @@ Run in production mode (all secrets via environment variables):
 ```bash
 java -jar target/streamroom-backend-1.0.0.jar \
   --spring.profiles.active=prod \
-  --DB_URL=jdbc:postgresql://... \
-  --DB_USERNAME=... \
-  --DB_PASSWORD=... \
-  --JWT_SECRET=... \
-  --TWITCH_CLIENT_ID=... \
-  --TWITCH_ACCESS_TOKEN=... \
-  --CORS_ALLOWED_ORIGINS=https://yourdomain.com
+  --spring.datasource.url=jdbc:postgresql://db-host:5432/streamroom \
+  --spring.datasource.username=streamroom_user \
+  --spring.datasource.password=your-password \
+  --jwt.secret=your-secret \
+  --twitch.api.client-id=your-client-id \
+  --twitch.api.access-token=your-access-token \
+  --cors.allowed-origins=https://yourdomain.com
 ```
 
 ---

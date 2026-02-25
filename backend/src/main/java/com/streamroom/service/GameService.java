@@ -5,35 +5,38 @@ import com.streamroom.entity.Game;
 import com.streamroom.exception.ResourceNotFoundException;
 import com.streamroom.mapper.DtoMapper;
 import com.streamroom.repository.GameRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class GameService implements IGameService {
+
+    private static final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
     private final DtoMapper mapper;
 
+    public GameService(GameRepository gameRepository, DtoMapper mapper) {
+        this.gameRepository = gameRepository;
+        this.mapper = mapper;
+    }
+
     @Override
     @Transactional
     public GameDTO createGame(GameDTO gameDTO) {
-        log.info("Creating game '{}'", gameDTO.getTitle());
+        log.info("Creating game '{}'", gameDTO.title());
 
-        Game game = Game.builder()
-                .title(gameDTO.getTitle())
-                .description(gameDTO.getDescription())
-                .coverImage(gameDTO.getCoverImage())
-                .genre(gameDTO.getGenre())
-                .developer(gameDTO.getDeveloper())
-                .isFeatured(false)
-                .build();
+        var game = new Game();
+        game.setTitle(gameDTO.title());
+        game.setDescription(gameDTO.description());
+        game.setCoverImage(gameDTO.coverImage());
+        game.setGenre(gameDTO.genre());
+        game.setDeveloper(gameDTO.developer());
 
         return mapper.toGameDTO(gameRepository.save(game));
     }
@@ -46,12 +49,12 @@ public class GameService implements IGameService {
         Game game = gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game", id));
 
-        game.setTitle(gameDTO.getTitle());
-        game.setDescription(gameDTO.getDescription());
-        game.setCoverImage(gameDTO.getCoverImage());
-        game.setGenre(gameDTO.getGenre());
-        game.setDeveloper(gameDTO.getDeveloper());
-        game.setIsFeatured(gameDTO.getIsFeatured());
+        game.setTitle(gameDTO.title());
+        game.setDescription(gameDTO.description());
+        game.setCoverImage(gameDTO.coverImage());
+        game.setGenre(gameDTO.genre());
+        game.setDeveloper(gameDTO.developer());
+        game.setIsFeatured(gameDTO.isFeatured());
 
         return mapper.toGameDTO(gameRepository.save(game));
     }

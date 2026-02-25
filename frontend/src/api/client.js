@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+// In development, use localhost:8080/api
+// In production (Docker), the nginx proxy will handle /api requests
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
 })
 

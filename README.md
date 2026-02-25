@@ -1,6 +1,8 @@
 # StreamRoom — Cyberpunk Streaming Website
 
-A full-stack streaming website for **PiggyPlaysPH** built with React 19 and Spring Boot 3.2, featuring a full-viewport Twitch player, a content management system, and a cyberpunk aesthetic.
+A full-stack streaming website for **PiggyPlaysPH** built with React 19 and Spring Boot 4.0.3, featuring a full-viewport Twitch player, a content management system, and a cyberpunk aesthetic.
+
+**All services are fully containerized with Docker** — run the entire application stack with one command!
 
 ---
 
@@ -43,7 +45,7 @@ streamroom/
 │   ├── .env.example
 │   └── vite.config.js
 │
-├── backend/                     # Spring Boot 3.2 + Java 25
+├── backend/                     # Spring Boot 4.0.3 + Java 25
 │   └── src/main/java/com/streamroom/
 │       ├── config/
 │       │   ├── CorsConfig.java          # Centralized CORS (property-driven)
@@ -103,13 +105,19 @@ streamroom/
 - **React Icons**
 
 ### Backend
-- **Java 25 / Spring Boot 3.2**
-- **Spring Data JPA** + **PostgreSQL**
+- **Java 25 / Spring Boot 4.0.3**
+- **Spring Data JPA** + **PostgreSQL 15**
 - **Spring Boot Validation** — Jakarta Bean Validation on all write DTOs
 - **Springdoc OpenAPI** — Swagger UI at `/api/swagger-ui.html` (dev only)
 - **Lombok**
 - **Spring WebFlux** — WebClient for Twitch API
 - **JJWT** — JWT library ready for auth implementation
+
+### Deployment
+- **Docker & Docker Compose** — All services containerized (frontend, backend, database)
+- **Nginx** — Reverse proxy for frontend and API routing
+- **Multi-stage builds** — Optimized image sizes
+- **Health checks** — Automatic service dependency management
 
 ---
 

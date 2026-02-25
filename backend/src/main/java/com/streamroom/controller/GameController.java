@@ -3,7 +3,6 @@ package com.streamroom.controller;
 import com.streamroom.dto.GameDTO;
 import com.streamroom.service.IGameService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-@RequiredArgsConstructor
 public class GameController {
 
     private final IGameService gameService;
+
+    public GameController(IGameService gameService) {
+        this.gameService = gameService;
+    }
 
     @PostMapping
     public ResponseEntity<GameDTO> createGame(@Valid @RequestBody GameDTO gameDTO) {

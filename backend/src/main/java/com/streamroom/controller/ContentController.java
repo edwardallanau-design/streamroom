@@ -4,7 +4,6 @@ import com.streamroom.dto.ContentDTO;
 import com.streamroom.dto.CreateContentRequest;
 import com.streamroom.service.IContentService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/content")
-@RequiredArgsConstructor
 public class ContentController {
 
     private final IContentService contentService;
+
+    public ContentController(IContentService contentService) {
+        this.contentService = contentService;
+    }
 
     @PostMapping
     public ResponseEntity<ContentDTO> createContent(
