@@ -69,4 +69,19 @@
   .twitch-chat {
     display: none;
   }
+
+  .chat-toggle {
+    display: none;
+  }
+}
+
+/* Hide chat for vertical/portrait orientation */
+@media (orientation: portrait) {
+  .twitch-chat {
+    display: none;
+  }
+
+  .chat-toggle {
+    display: none;
+  }
 }
